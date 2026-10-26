@@ -75,19 +75,14 @@ a {
 }
 .brand {
   display: flex;
-  gap: 11px;
+  gap: 8px;
   align-items: center;
-  padding: 0 11px;
+  padding: 0 8px;
   color: var(--foreground);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 750;
-  letter-spacing: -1.2px;
-}
-.brand-suffix {
-  font-size: 12px;
-  font-weight: 450;
-  letter-spacing: -0.2px;
-  color: var(--muted);
+  letter-spacing: -0.6px;
+  white-space: nowrap;
 }
 .brand-icon {
   display: flex;
@@ -339,20 +334,40 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 15px;
-  margin: 18px 0 9px;
+  margin: 8px 0 9px;
 }
 .legend-button {
   height: auto;
-  padding: 4px 0;
-  border-radius: 0;
+  padding: 5px 8px;
+  border-radius: 6px;
   font-size: 10px;
   color: var(--muted);
   gap: 7px;
   font-weight: 450;
 }
-.legend-selected {
+.legend-visible {
   color: var(--foreground);
-  font-weight: 650;
+  background: var(--surface-secondary);
+}
+.legend-hidden > span {
+  text-decoration: line-through;
+}
+.legend-hidden .swatch {
+  opacity: 0.3;
+}
+.visibility-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.visibility-heading .button {
+  height: auto;
+  font-size: 11px;
 }
 .swatch {
   display: inline-block;
@@ -975,8 +990,8 @@ h2 {
   .app-header {
     padding: 0 25px;
   }
-  .brand-suffix {
-    font-size: 11px;
+  .brand {
+    font-size: 18px;
   }
   .explorer-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1050,9 +1065,6 @@ h2 {
     padding: 0;
   }
   .brand > span:last-child {
-    display: inline;
-  }
-  .brand-suffix {
     display: inline;
   }
   .brand-icon {
@@ -1274,6 +1286,7 @@ h2 {
 
 .chart-granularity {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
@@ -1292,7 +1305,8 @@ h2 {
 }
 @media (max-width: 650px) {
   .chart-granularity {
-    display: block;
+    align-items: flex-start;
+    gap: 12px;
   }
   .chart-granularity > span {
     display: block;

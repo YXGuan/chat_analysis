@@ -5,6 +5,8 @@ import {
   BarChart3,
   CircleHelp,
   Download,
+  Eye,
+  EyeOff,
   GitBranch,
   Moon,
   Sun,
@@ -16,19 +18,59 @@ import {
   Insights,
   Stats,
 } from "./temporal/Panels";
-import { WeeklyChart } from "./temporal/WeeklyChart";
+import { ActivityChart } from "./temporal/ActivityChart";
 import ImportHistory from "./temporal/ImportHistory";
 import HistorySelect from "./temporal/HistorySelect";
 import type { HistoryDataset } from "./temporal/HistorySelect";
 const ClusterExplorer = lazy(() => import("./temporal/ClusterExplorer"));
-import { formatDate, monday } from "./temporal/types";
-import type { Profile, View } from "./temporal/types";
+import {
+  filterTimeline,
+  GROUPINGS,
+  periodLabel,
+  periodStart,
+} from "./temporal/timeline";
+import type { Detail, Grouping, Visibility } from "./temporal/timeline";
+import type { Profile, Topic, View } from "./temporal/types";
 
 const BUILTIN_DATASETS: HistoryDataset[] = [
   { id: "personal", name: "Sample · personal histories" },
   { id: "research", name: "Sample · science & physics" },
 ];
 const initial = new URLSearchParams(location.search);
+const EMPTY_VISIBILITY: Visibility = { themes: [], topics: [] };
+const VISIBILITY_KEY = "chat-analysis-visibility";
+function savedVisibility(): Record<string, Visibility> {
+  try {
+    const saved = JSON.parse(localStorage.getItem(VISIBILITY_KEY) || "{}");
+    return Object.fromEntries(
+      Object.entries(saved).flatMap(([key, value]) => {
+        const item = value as Visibility | null;
+        return item && Array.isArray(item.themes) && Array.isArray(item.topics)
+          ? [
+              [
+                key,
+                {
+                  themes: item.themes.filter((id) => typeof id === "string"),
+                  topics: item.topics.filter((id) => typeof id === "string"),
+                },
+              ],
+            ]
+          : [];
+      }),
+    );
+  } catch {
+    return {};
+  }
+}
+function savedGrouping(): Grouping {
+  try {
+    const value =
+      initial.get("group") || localStorage.getItem("chat-analysis-grouping");
+    return GROUPINGS.find((g) => g.id === value)?.id || "week";
+  } catch {
+    return "week";
+  }
+}
 
 export default function TemporalApp() {
   const [dataset, setDataset] = useState(
@@ -71,10 +113,27 @@ export default function TemporalApp() {
     [error, setError] = useState(""),
     [attempt, setAttempt] = useState(0);
   const [dataDataset, setDataDataset] = useState<string | null>(null);
-  const [detail, setDetail] = useState<"themes" | "topics">("themes");
+  const [detail, setDetail] = useState<Detail>("themes");
+  const [grouping, setGrouping] = useState<Grouping>(savedGrouping);
+  const [visibility, setVisibility] = useState(savedVisibility);
+  const hidden = visibility[dataset] || EMPTY_VISIBILITY;
+  useEffect(() => {
+    try {
+      localStorage.setItem(VISIBILITY_KEY, JSON.stringify(visibility));
+    } catch {
+      /* Keep in-memory preferences when browser storage is unavailable. */
+    }
+  }, [visibility]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("chat-analysis-grouping", grouping);
+    } catch {
+      /* Grouping also remains in the URL. */
+    }
+  }, [grouping]);
   const [mode, setMode] = useState<"count" | "share">("count");
   const [category, setCategory] = useState<string | null>(null),
-    [week, setWeek] = useState<string | null>(null),
+    [period, setPeriod] = useState<string | null>(null),
     [evidenceUser, setEvidenceUser] = useState<string | null>(null);
   const [query, setQuery] = useState(""),
     [dark, setDark] = useState(localStorage.getItem("kura-theme") === "dark");
@@ -88,7 +147,7 @@ export default function TemporalApp() {
     setData(null);
     setError("");
     setCategory(null);
-    setWeek(null);
+    setPeriod(null);
     setEvidenceUser(null);
     setQuery("");
     fetch(
@@ -123,36 +182,68 @@ export default function TemporalApp() {
     history.replaceState(
       null,
       "",
-      `?dataset=${dataset}&view=${view}&user=${encodeURIComponent(user)}`,
+      `?dataset=${dataset}&view=${view}&user=${encodeURIComponent(user)}&group=${grouping}`,
     );
-  }, [dataset, view, user]);
-  const timelineData =
-    data && detail === "topics" && data.topic_timeline
-      ? {
-          ...data,
-          ...data.topic_timeline,
-          taxonomy: data.clusters.filter((t) => t.parent_id),
-        }
-      : data;
+  }, [dataset, view, user, grouping]);
+  const timelineData = useMemo(
+    () => (data ? filterTimeline(data, detail, hidden) : null),
+    [data, detail, hidden],
+  );
+  const legend =
+    (detail === "topics"
+      ? data?.clusters.filter((t) => t.parent_id)
+      : data?.taxonomy) || [];
+  const hiddenCount = legend.length - (timelineData?.taxonomy.length || 0);
+  const shownChats =
+    timelineData?.users
+      .filter((u) => user === "all" || u.label === user)
+      .reduce((sum, u) => sum + u.total, 0) || 0;
+  const totalChats =
+    data?.users
+      .filter((u) => user === "all" || u.label === user)
+      .reduce((sum, u) => sum + u.total, 0) || 0;
   const users =
       timelineData?.users.filter((u) => user === "all" || u.label === user) ||
       [],
     reference = users[0];
   const clear = () => {
     setCategory(null);
-    setWeek(null);
+    setPeriod(null);
     setEvidenceUser(null);
   };
+  const showAll = () => {
+    setVisibility((current) => ({ ...current, [dataset]: EMPTY_VISIBILITY }));
+  };
+  const toggleVisibility = (topic: Topic) => {
+    const visible = timelineData!.taxonomy.some((t) => t.id === topic.id);
+    setVisibility((current) => {
+      const previous = current[dataset] || EMPTY_VISIBILITY;
+      return {
+        ...current,
+        [dataset]: {
+          ...previous,
+          themes:
+            detail === "topics" && !visible
+              ? previous.themes.filter((id) => id !== topic.parent_id)
+              : previous.themes,
+          [detail]: visible
+            ? [...previous[detail], topic.id]
+            : previous[detail].filter((id) => id !== topic.id),
+        },
+      };
+    });
+    clear();
+  };
   const visibleChats = useMemo(() => {
-    if (!data) return [];
-    return Object.values(data.chats)
+    if (!timelineData) return [];
+    return Object.values(timelineData.chats)
       .filter(
         (c) =>
           (user === "all" || c.metadata.user === user) &&
           (!evidenceUser || c.metadata.user === evidenceUser) &&
           (!category ||
             (detail === "topics" ? c.topic_id : c.category) === category) &&
-          (!week || monday(c.created_at) === week) &&
+          (!period || periodStart(c.created_at, grouping) === period) &&
           (!query ||
             `${c.summary || ""} ${c.messages
               .filter((m) => m.role === "user")
@@ -162,7 +253,16 @@ export default function TemporalApp() {
               .includes(query.toLowerCase())),
       )
       .sort((a, b) => a.created_at.localeCompare(b.created_at));
-  }, [data, user, category, week, evidenceUser, query, detail]);
+  }, [
+    timelineData,
+    user,
+    category,
+    period,
+    evidenceUser,
+    query,
+    detail,
+    grouping,
+  ]);
   const exportData = () => {
     if (!data) return;
     const url = URL.createObjectURL(
@@ -178,15 +278,17 @@ export default function TemporalApp() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <a className="brand" href="?dataset=personal&view=timeline">
-          <span className="brand-icon">
+        <a
+          className="brand"
+          href="?dataset=personal&view=timeline"
+          aria-label="Chat Analysis"
+        >
+          <span className="brand-icon" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
-          <span>
-            kura<span className="brand-suffix"> / temporal</span>
-          </span>
+          <span>Chat Analysis</span>
         </a>
         <nav aria-label="Main navigation">
           {(
@@ -288,13 +390,24 @@ export default function TemporalApp() {
             </div>
           ) : (
             <>
-              <Stats data={data} user={user} />
+              <Stats
+                data={view === "timeline" ? timelineData! : data}
+                user={user}
+                detail={view === "timeline" ? detail : "themes"}
+                filtered={view === "timeline" && hiddenCount > 0}
+              />
               {view === "timeline" && (
                 <>
                   <Card className="timeline-card">
                     <Card.Header className="chart-heading">
                       <div>
-                        <Card.Title>Weekly activity</Card.Title>
+                        <Card.Title>
+                          {GROUPINGS.find((g) => g.id === grouping)!.title}
+                        </Card.Title>
+                        <Card.Description>
+                          {shownChats} of {totalChats} chats shown · shares use
+                          visible chats
+                        </Card.Description>
                       </div>
                       <Tabs
                         selectedKey={mode}
@@ -340,39 +453,100 @@ export default function TemporalApp() {
                             </Tabs.List>
                           </Tabs.ListContainer>
                         </Tabs>
+                        <Tabs
+                          selectedKey={grouping}
+                          onSelectionChange={(key) => {
+                            setGrouping(String(key) as Grouping);
+                            clear();
+                          }}
+                          variant="secondary"
+                        >
+                          <Tabs.ListContainer>
+                            <Tabs.List aria-label="Group activity by">
+                              {GROUPINGS.map((g) => (
+                                <Tabs.Tab id={g.id} key={g.id}>
+                                  {g.label}
+                                  <Tabs.Indicator />
+                                </Tabs.Tab>
+                              ))}
+                            </Tabs.List>
+                          </Tabs.ListContainer>
+                        </Tabs>
                       </div>
-                      <div className="legend">
-                        {timelineData!.taxonomy.map((t) => (
+                      <div className="visibility-heading">
+                        <span>
+                          Click a {detail === "themes" ? "theme" : "topic"} to
+                          hide or show it
+                        </span>
+                        {hiddenCount > 0 && (
                           <Button
-                            key={t.id}
                             size="sm"
                             variant="ghost"
-                            aria-pressed={category === t.id}
-                            className={`legend-button ${category === t.id ? "legend-selected" : ""}`}
                             onPress={() => {
-                              setCategory(category === t.id ? null : t.id);
+                              showAll();
+                              clear();
                             }}
                           >
-                            <i
-                              className="swatch"
-                              style={{ background: t.color }}
-                            />
-                            {t.name}
+                            Show all ({hiddenCount} hidden)
                           </Button>
-                        ))}
+                        )}
                       </div>
-                      <WeeklyChart
-                        data={timelineData!}
-                        user={user}
-                        mode={mode}
-                        highlight={category}
-                        selectedWeek={week}
-                        onSelect={(c, w, u) => {
-                          setCategory(c);
-                          setWeek(w);
-                          setEvidenceUser(u);
-                        }}
-                      />
+                      <div
+                        className="legend"
+                        aria-label={`${detail === "themes" ? "Theme" : "Topic"} visibility`}
+                      >
+                        {legend.map((t) => {
+                          const visible = timelineData!.taxonomy.some(
+                            (item) => item.id === t.id,
+                          );
+                          return (
+                            <Button
+                              key={t.id}
+                              size="sm"
+                              variant="ghost"
+                              aria-label={`${visible ? "Hide" : "Show"} ${t.name}`}
+                              aria-pressed={visible}
+                              className={`legend-button ${visible ? "legend-visible" : "legend-hidden"}`}
+                              onPress={() => toggleVisibility(t)}
+                            >
+                              <i
+                                className="swatch"
+                                style={{ background: t.color }}
+                              />
+                              <span>{t.name}</span>
+                              {visible ? (
+                                <Eye size={12} />
+                              ) : (
+                                <EyeOff size={12} />
+                              )}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                      {timelineData!.taxonomy.length ? (
+                        <ActivityChart
+                          data={timelineData!}
+                          user={user}
+                          mode={mode}
+                          highlight={category}
+                          grouping={grouping}
+                          detail={detail}
+                          selectedPeriod={period}
+                          onSelect={(c, w, u) => {
+                            setCategory(c);
+                            setPeriod(w);
+                            setEvidenceUser(u);
+                          }}
+                        />
+                      ) : (
+                        <div className="chart-empty">
+                          <EyeOff size={24} />
+                          <p>All {detail} are hidden.</p>
+                          <Button variant="secondary" onPress={showAll}>
+                            Show all {detail}
+                          </Button>
+                        </div>
+                      )}
                     </Card.Content>
                   </Card>
                   <div className="section-title">
@@ -392,15 +566,20 @@ export default function TemporalApp() {
                       heading="Conversations"
                       filter={[
                         evidenceUser || (user === "all" ? "All users" : user),
-                        week && `Week of ${formatDate(week)}`,
+                        period && periodLabel(period, grouping),
+                        hiddenCount > 0 &&
+                          `${hiddenCount} ${hiddenCount === 1 ? (detail === "themes" ? "theme" : "topic") : detail} hidden`,
                         category &&
                           timelineData!.taxonomy.find((t) => t.id === category)
                             ?.name,
                       ]
                         .filter(Boolean)
                         .join(" · ")}
-                      filtered={!!(category || week)}
-                      clear={clear}
+                      filtered={!!(category || period || hiddenCount)}
+                      clear={() => {
+                        clear();
+                        showAll();
+                      }}
                       query={query}
                       setQuery={setQuery}
                     />

@@ -12,7 +12,17 @@ import {
 import type { Chat, Profile } from "./types";
 import { change, formatDate, percent } from "./types";
 
-export function Stats({ data, user }: { data: Profile; user: string }) {
+export function Stats({
+  data,
+  user,
+  detail = "themes",
+  filtered = false,
+}: {
+  data: Profile;
+  user: string;
+  detail?: "themes" | "topics";
+  filtered?: boolean;
+}) {
   const users = data.users.filter((u) => user === "all" || u.label === user),
     total = users.reduce((s, u) => s + u.total, 0),
     active = new Set(
@@ -25,7 +35,7 @@ export function Stats({ data, user }: { data: Profile; user: string }) {
       .reverse()[0];
   const items = [
     {
-      label: "Chats",
+      label: filtered ? "Visible chats" : "Chats",
       value: total,
     },
     {
@@ -33,7 +43,11 @@ export function Stats({ data, user }: { data: Profile; user: string }) {
       value: active,
     },
     {
-      label: "Themes",
+      label: filtered
+        ? `Visible ${detail}`
+        : detail === "topics"
+          ? "Topics"
+          : "Themes",
       value: data.taxonomy.length,
     },
     {
@@ -350,8 +364,13 @@ export function About({ data }: { data: Profile | null }) {
               </p>
               <h3>Compare like with like</h3>
               <p>
-                Bars use UTC Monday–Sunday weeks. Share mode divides by that
-                user's recorded chats that week. Empty weeks remain empty.
+                Group activity by UTC day, Monday–Sunday week, two-week period,
+                or calendar month. Two-week periods use consistent Monday
+                boundaries across histories. Empty periods remain visible. Hide
+                themes or topics using the chart labels; your browser remembers
+                the selection for each history. Share mode divides by that
+                user's visible chats in each period. Hidden themes also hide
+                their topics. Summary counts and changes use visible chats.
                 Changes compare the first and last four calendar weeks of each
                 user's own span. Non-overlapping windows each need at least five
                 chats.

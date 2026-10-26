@@ -1,7 +1,15 @@
-# Temporal Kura
+# Chat Analysis
+
+
+![1793055258085](image/README/1793055258085.png)
+
+![1793055292562](image/README/1793055292562.png)
+
+![1793055342996](image/README/1793055342996.png)
 
 Explore what changes in someone's recorded questions and what keeps returning.
-The app combines weekly timelines with a cluster explorer and source conversations.
+The app combines day, week, two-week, and monthly timelines with a cluster
+explorer and source conversations.
 Import your own ChatGPT history, or try the included WildChat samples.
 Cluster views are List, Tree, Flow, and Circle.
 
@@ -84,8 +92,14 @@ GPT-6 Luna independently reanalyzed both sets from retained **user** messages;
 this app does not reuse the earlier assistant-reviewed labels or the reference
 run's original cluster assignments.
 
-Switch between broad themes and specific topics in the weekly chart. Counts show
-activity; shares compare topic mix. Empty weeks remain visible. Click a segment
+Switch between broad themes and specific topics in the activity chart, and group
+it by day, one week, two weeks, or calendar month. Click theme or topic labels to
+hide or show them; **Show all** restores hidden categories. Your browser saves
+visibility per dataset and remembers the grouping. Hidden themes also hide their
+topics. Counts, shares, changes, and source conversations use visible chats;
+the original date span and four-week comparison windows remain fixed.
+Counts show activity; shares compare the visible topic mix. Empty periods remain
+visible. Click a segment
 to read its chats, or open Topics to explore the clusters as a list, tree, flow,
 or nested circles. Source conversations stay beside the selected cluster.
 
@@ -152,14 +166,22 @@ one person's activity. The histories are incomplete. The loader retains the
 first eight messages and shortens each to 2,000 characters. Text may contain
 personal details despite the source's redaction.
 
-The original Kura codebase was adapted from the upstream Kura checkout at commit
-`cc0803c6c4561c9ad76009426f565a8fb0314f95`; see [README.kura.md](README.kura.md).
-The original UI source remains in `ui/src/App.tsx`; the temporal app enters via
-`ui/src/TemporalApp.tsx`.
-
 The earlier [standalone bar-chart prototype](examples/temporal/sample/report.html)
 and [baseline notes](examples/temporal/README.md) are preserved with their original
 assistant-reviewed labels. They are separate from the new Luna analysis.
+
+## Acknowledgments and related work
+
+- **[Kura](https://github.com/jxnl/kura)** provides the original codebase that
+  Chat Analysis extends with history imports, temporal analysis, and an interactive
+  explorer. This repository was adapted from upstream commit
+  `cc0803c6c4561c9ad76009426f565a8fb0314f95`; see the original
+  [Kura README](README.kura.md). The original UI remains in `ui/src/App.tsx`;
+  Chat Analysis enters via `ui/src/TemporalApp.tsx`.
+- **[OpenClio](https://github.com/Phylliida/OpenClio)** is related open-source work
+  implementing [Anthropic&#39;s Clio](https://www.anthropic.com/research/clio) for
+  analyzing and exploring AI conversations through summaries and hierarchical
+  clusters.
 
 ## Validation
 

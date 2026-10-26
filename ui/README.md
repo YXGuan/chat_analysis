@@ -1,10 +1,21 @@
-# Temporal Kura UI
+# Chat Analysis UI
 
 A React 19 and HeroUI v3 interface for the saved GPT-6 Luna analyses in
-`public/data/`. It includes a weekly stacked bar chart, two hierarchy levels,
+`public/data/`. It includes a stacked activity chart with day, one-week,
+two-week, and calendar-month groupings, two hierarchy levels,
 a combined cluster and conversation explorer with List, Tree, Flow, and Circle
 views, search, and light/dark themes. Legacy `view=conversations` links open the
 combined explorer.
+
+Click chart labels to hide or show themes and topics, or use **Show all** to
+restore them. Hidden themes also hide their topics. Counts, shares, changes,
+and linked conversations use visible chats while the original date span stays
+fixed. Visibility is saved per dataset in browser storage; grouping is saved in
+browser storage and the URL. Empty periods remain visible, and clicking a bar
+opens its exact conversations. Change comparisons retain four-week windows.
+
+Run `npm test` with Node.js 22.6+ to check calendar boundaries, aggregation,
+visibility, and comparison calculations using synthetic data.
 
 ```bash
 cd ..
