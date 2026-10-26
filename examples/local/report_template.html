@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kura Cluster Report</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --wash: rgba(11, 11, 11, 0.04);
+    --select: rgba(42, 120, 214, 0.10);
+    --neutral: #52514e;
+    --user-1: #2a78d6;
+    --user-2: #eb6834;
+    --user-3: #1baf7a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #f0efec;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --wash: rgba(255, 255, 255, 0.05);
+      --select: rgba(57, 135, 229, 0.20);
+      --neutral: #c3c2b7;
+      --user-1: #3987e5;
+      --user-2: #d95926;
+      --user-3: #199e70;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --wash: rgba(255, 255, 255, 0.05);
+    --select: rgba(57, 135, 229, 0.20);
+    --neutral: #c3c2b7;
+    --user-1: #3987e5;
+    --user-2: #d95926;
+    --user-3: #199e70;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  button, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 24px 16px 48px; }
+  .muted { color: var(--ink-2); }
+  .count { font-variant-numeric: tabular-nums; color: var(--ink-2); text-align: right; min-width: 3ch; }
+
+  header.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  h1 { font-size: 22px; font-weight: 650; margin: 0 0 4px; }
+  .sub { margin: 0; color: var(--ink-2); }
+  .ghost {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 12px; white-space: nowrap;
+  }
+  .ghost:hover { background: var(--wash); }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 16px; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .tile-label { font-size: 12px; color: var(--ink-2); }
+  .tile-value { font-size: 26px; font-weight: 600; margin-top: 2px; }
+
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .filters-label { color: var(--ink-2); margin-right: 4px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px;
+  }
+  .chip:hover { background: var(--wash); }
+  .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--select); font-weight: 600; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+
+  .users { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .user-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .user-head { display: flex; align-items: center; gap: 8px; }
+  .user-meta { color: var(--ink-2); margin: 2px 0 8px; }
+  .user-about { margin: 0 0 8px; }
+  .user-top-label { font-size: 12px; color: var(--ink-2); }
+  .user-top { margin: 4px 0 0; padding-left: 18px; }
+  .user-top li { margin: 2px 0; }
+  .user-top li span.count { margin-left: 6px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 1000px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; }
+  .panel-head h2 { font-size: 16px; margin: 0 0 10px; }
+  .views { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .views button {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px;
+  }
+  .views button:hover { background: var(--wash); }
+  .views button[aria-pressed="true"] { border-color: var(--ink); background: var(--select); font-weight: 600; }
+  .views-label { font-size: 12px; color: var(--ink-2); margin-right: 4px; align-self: center; }
+  .help { margin: 0 0 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; color: var(--ink-2); font-size: 12px; margin: 0 0 4px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .levels { color: var(--ink-2); font-size: 12px; margin: 0 0 10px; }
+  .tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .tools label { color: var(--ink-2); }
+  select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; }
+  .notice { color: var(--ink-2); padding: 24px 0; }
+
+  ul.tree, ul.tree ul { list-style: none; margin: 0; padding: 0; }
+  .row {
+    display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; align-items: center; gap: 8px;
+    padding: 3px 8px 3px calc(4px + var(--depth) * 18px); border-radius: 6px;
+  }
+  .row:hover { background: var(--wash); }
+  .row.selected { background: var(--select); }
+  .twisty { width: 22px; height: 22px; border: 0; background: none; color: var(--ink-2); border-radius: 4px; padding: 0; }
+  .twisty:hover { background: var(--wash); }
+  .row .name { text-align: left; background: none; border: 0; padding: 2px 0; min-width: 0; overflow-wrap: anywhere; }
+  .row.level-0 .name { font-weight: 600; }
+  .mix { display: flex; gap: 2px; width: 72px; height: 8px; }
+  .mix span { height: 8px; background: var(--c); }
+  .mix span:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
+  .mix span:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+  .mix span.off { background: var(--grid); }
+
+  .details { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+  @media (max-width: 1000px) { .details { position: static; max-height: none; } }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 12px; color: var(--ink-2); }
+  .crumb { background: none; border: 0; padding: 0; color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; }
+  .detail-title { font-size: 18px; margin: 6px 0 4px; }
+  .detail-desc { margin: 0 0 8px; }
+  .detail-stats { color: var(--ink-2); margin: 0 0 8px; }
+  .breakdown { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 4px 0 8px; }
+  .breakdown span { display: inline-flex; align-items: center; gap: 6px; }
+  h3 { font-size: 13px; margin: 16px 0 6px; color: var(--ink-2); font-weight: 600; }
+  .sub-list { list-style: none; margin: 0; padding: 0; }
+  .sub-list li { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; }
+  .link { background: none; border: 0; padding: 0; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
+  .chat { border-top: 1px solid var(--grid); padding: 10px 0; }
+  .chat-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+  .chat-summary { margin: 4px 0; }
+  .conv summary { cursor: pointer; color: var(--ink-2); font-size: 13px; }
+  .msg { margin: 8px 0; padding: 8px 10px; border-radius: 8px; background: var(--wash); }
+  .msg.assistant { background: none; border: 1px solid var(--grid); }
+  .msg-role { font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 2px; }
+  .msg-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+  .more { margin-top: 8px; }
+
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font-size: 12px; fill: var(--ink-2); }
+  .chart text.strong { fill: var(--ink); font-weight: 600; }
+  .chart text.hero { fill: var(--ink); font-size: 28px; font-weight: 600; }
+  .chart .halo { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+  .chart .link { fill: none; stroke: var(--axis); }
+  .chart .flow { fill: none; }
+  .chart .flow:hover { stroke-opacity: 0.7; }
+  .chart .node { stroke: var(--surface); stroke-width: 2; cursor: pointer; }
+  .chart .node:hover { filter: brightness(1.1); }
+  .chart .node.selected { stroke: var(--ink); stroke-width: 2.5; }
+  .chart .hit { fill: transparent; cursor: pointer; }
+  .chart .frame { fill: var(--wash); stroke: var(--grid); }
+  .chart .outline { fill: none; stroke: var(--axis); }
+  .chart .bar { fill: var(--neutral); fill-opacity: 0.75; }
+  .chart .nolabel { pointer-events: none; }
+  figcaption { color: var(--ink-2); font-size: 12px; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th { color: var(--ink-2); font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .tooltip {
+    position: fixed; z-index: 10; pointer-events: none; max-width: 300px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); padding: 8px 10px; font-size: 12px;
+  }
+  .tip-value { font-size: 14px; font-weight: 650; }
+  .tip-name { color: var(--ink-2); margin-bottom: 4px; }
+  .tip-row { display: flex; align-items: center; gap: 6px; }
+  .key { display: inline-block; width: 12px; height: 2px; border-radius: 1px; background: var(--c); }
+</style>
+__LIBRARIES__
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1 id="title"></h1>
+      <p class="sub" id="subtitle"></p>
+    </div>
+    <button type="button" class="ghost" id="theme"></button>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Summary"></section>
+  <nav class="filters" id="filters" aria-label="Filter by user"></nav>
+  <section class="users" id="users" aria-label="Users"></section>
+
+  <main class="layout">
+    <section class="panel" aria-labelledby="clusters-heading">
+      <div class="panel-head"><h2 id="clusters-heading">Explore the clusters</h2></div>
+      <div class="views" id="views" role="group" aria-label="Choose a view"></div>
+      <p class="help" id="help"></p>
+      <p class="legend" id="legend"></p>
+      <p class="levels" id="levels"></p>
+      <div id="view"></div>
+    </section>
+    <aside class="panel details" id="details" aria-live="polite"></aside>
+  </main>
+</div>
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+<script id="kura-data" type="application/json">__KURA_DATA__</script>
+<script>
+"use strict";
+
+const DATA = JSON.parse(document.getElementById("kura-data").textContent);
+const HAS_D3 = typeof window.d3 !== "undefined";
+const HAS_SANKEY = HAS_D3 && typeof window.d3.sankey === "function";
+const USERS = DATA.users;
+const userSlot = new Map(USERS.map((u, i) => [u.label, i + 1]));
+const CLUSTERS = DATA.clusters;
+const byId = new Map(CLUSTERS.map((c) => [c.id, c]));
+const kids = new Map();
+for (const c of CLUSTERS) {
+  const parent = c.parent && byId.has(c.parent) ? c.parent : null;
+  if (!kids.has(parent)) kids.set(parent, []);
+  kids.get(parent).push(c);
+}
+for (const list of kids.values()) {
+  list.sort((a, b) => b.chats.length - a.chats.length || a.name.localeCompare(b.name));
+}
+const roots = kids.get(null) || [];
+const maxLevel = Math.max(0, ...CLUSTERS.map((c) => c.level));
+const levelCounts = Array.from({ length: maxLevel + 1 }, (_, l) => CLUSTERS.filter((c) => c.level === l).length);
+const mixOf = new Map(CLUSTERS.map((c) => {
+  const mix = USERS.map(() => 0);
+  for (const id of c.chats) {
+    const slot = userSlot.get(DATA.chats[id] && DATA.chats[id].user);
+    if (slot) mix[slot - 1] += 1;
+  }
+  return [c.id, mix];
+}));
+
+const VIEWS = [
+  { id: "list", name: "List", help: "Every cluster as an outline you can open and close. The easiest way to read the names." },
+  { id: "tree", name: "Tree", d3: true, help: "A node-link tree. Each group branches into the smaller clusters inside it. Bigger dots and thicker lines mean more chats." },
+  { id: "radial", name: "Radial tree", d3: true, help: "The same branches drawn in a circle, with all chats in the center and the base clusters around the edge." },
+  { id: "sunburst", name: "Sunburst", d3: true, help: "Rings from the center outward: top-level groups first, then the clusters inside them. Wider slices hold more chats." },
+  { id: "icicle", name: "Icicle", d3: true, help: "Like the sunburst, but in straight columns from left to right, so the names are easier to read." },
+  { id: "treemap", name: "Treemap", d3: true, help: "Each box is a base cluster, sized by its chats. Boxes sit inside the frame of their top-level group." },
+  { id: "pack", name: "Circles", d3: true, help: "Clusters drawn as circles inside the circles of the groups they belong to." },
+  { id: "network", name: "Network", d3: true, help: "A graph that links each user to the base clusters they chat about, and each cluster to its group. Clusters that several users share get pulled into the middle." },
+  { id: "flow", name: "Flow", d3: true, sankey: true, help: "How each user's chats split into top-level groups, and then into the clusters one level down. Thicker bands mean more chats." },
+  { id: "map", name: "Map", help: "Kura's map of the clusters at one level. Clusters that sit close together are about similar things. Bigger dots hold more chats." },
+  { id: "table", name: "Table", help: "Every cluster with its numbers, in tree order." },
+];
+
+const state = {
+  user: null,
+  selected: roots.length ? roots[0].id : null,
+  view: HAS_D3 ? "tree" : "list",
+  mapLevel: maxLevel,
+  showAll: false,
+  expanded: new Set(roots.map((r) => r.id)),
+};
+
+// ---------- helpers ----------
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs || {})) {
+    if (value === null || value === undefined || value === false) continue;
+    if (key === "class") node.className = value;
+    else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else node.setAttribute(key, value === true ? "" : String(value));
+  }
+  for (const child of children.flat(Infinity)) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : String(child));
+  }
+  return node;
+}
+function swatch(slot) {
+  return el("span", { class: "swatch", style: `--c: var(--user-${slot})`, "aria-hidden": "true" });
+}
+function plural(n, word) {
+  return `${n.toLocaleString("en-US")} ${word}${n === 1 ? "" : "s"}`;
+}
+const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+function fmtDate(text) {
+  const date = new Date(`${text}T00:00:00`);
+  return Number.isNaN(date.getTime()) ? text : dateFormat.format(date);
+}
+function fmtRange(a, b) {
+  return a === b ? fmtDate(a) : `${fmtDate(a)} – ${fmtDate(b)}`;
+}
+function totalChats() {
+  return state.user ? USERS[userSlot.get(state.user) - 1].chats : Object.keys(DATA.chats).length;
+}
+function count(c) {
+  return state.user ? mixOf.get(c.id)[userSlot.get(state.user) - 1] : c.chats.length;
+}
+function ancestors(c) {
+  const path = [];
+  let parent = c.parent ? byId.get(c.parent) : null;
+  while (parent) {
+    path.unshift(parent);
+    parent = parent.parent ? byId.get(parent.parent) : null;
+  }
+  return path;
+}
+function keepFocus(container, render) {
+  const active = document.activeElement;
+  const key = active && active.dataset ? active.dataset.focus : null;
+  render();
+  if (key) {
+    const again = container.querySelector(`[data-focus="${CSS.escape(key)}"]`);
+    if (again) again.focus();
+  }
+}
+const measure = document.createElement("canvas").getContext("2d");
+function textWidth(text, size, weight) {
+  measure.font = `${weight || 400} ${size || 12}px system-ui, -apple-system, "Segoe UI", sans-serif`;
+  return measure.measureText(text).width;
+}
+function fit(text, maxWidth, size, weight) {
+  if (maxWidth < 24) return "";
+  if (textWidth(text, size, weight) <= maxWidth) return text;
+  let lo = 0, hi = text.length;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if (textWidth(`${text.slice(0, mid)}…`, size, weight) <= maxWidth) lo = mid;
+    else hi = mid - 1;
+  }
+  return lo >= 4 ? `${text.slice(0, lo).trimEnd()}…` : "";
+}
+
+// Color: the user with the most chats in a cluster, paler when the cluster is more mixed.
+// With a user picked: that user's color, darker when more of the cluster is theirs.
+function paint(c) {
+  if (!c) return ["var(--neutral)", 0.18];
+  if (!USERS.length) return ["var(--user-1)", Math.max(0.3, 0.9 - 0.15 * c.level)];
+  const mix = mixOf.get(c.id);
+  const total = mix.reduce((a, b) => a + b, 0);
+  if (!total) return ["var(--grid)", 1];
+  if (state.user) {
+    const i = userSlot.get(state.user) - 1;
+    return mix[i] ? [`var(--user-${i + 1})`, 0.3 + 0.7 * (mix[i] / total)] : ["var(--grid)", 1];
+  }
+  const most = Math.max(...mix);
+  const leaders = mix.flatMap((n, i) => (n === most ? [i] : []));
+  if (leaders.length > 1) return ["var(--neutral)", 0.45];
+  return [`var(--user-${leaders[0] + 1})`, 0.3 + 0.7 * (most / total)];
+}
+
+// ---------- tooltip ----------
+const tip = document.getElementById("tooltip");
+function placeTip(x, y) {
+  tip.hidden = false;
+  const left = Math.min(x + 14, window.innerWidth - tip.offsetWidth - 8);
+  const top = Math.min(y + 14, window.innerHeight - tip.offsetHeight - 8);
+  tip.style.left = `${Math.max(8, left)}px`;
+  tip.style.top = `${Math.max(8, top)}px`;
+}
+function showTip(c, x, y) {
+  const n = c ? count(c) : totalChats();
+  const parts = [el("div", { class: "tip-value" }, plural(n, "chat")), el("div", { class: "tip-name" }, c ? c.name : "All chats")];
+  if (c && USERS.length > 1) {
+    USERS.forEach((u, i) => {
+      parts.push(el("div", { class: "tip-row" },
+        el("span", { class: "key", style: `--c: var(--user-${i + 1})` }),
+        el("strong", {}, mixOf.get(c.id)[i]),
+        el("span", { class: "muted" }, u.label)));
+    });
+  }
+  tip.replaceChildren(...parts);
+  placeTip(x, y);
+}
+function showFlowTip(link, x, y) {
+  const user = USERS[link.slot - 1];
+  tip.replaceChildren(
+    el("div", { class: "tip-value" }, plural(link.value, "chat")),
+    el("div", { class: "tip-name" }, `${link.source.name} → ${link.target.name}`),
+    user ? el("div", { class: "tip-row" }, el("span", { class: "key", style: `--c: var(--user-${link.slot})` }), el("span", { class: "muted" }, user.label)) : null);
+  placeTip(x, y);
+}
+function hideTip() { tip.hidden = true; }
+function tipEvents(node, c) {
+  node.addEventListener("pointermove", (e) => showTip(c, e.clientX, e.clientY));
+  node.addEventListener("pointerleave", hideTip);
+  node.addEventListener("focus", () => {
+    const box = node.getBoundingClientRect();
+    showTip(c, box.right, box.top);
+  });
+  node.addEventListener("blur", hideTip);
+}
+
+// ---------- header, summary, filters, users ----------
+function renderHeader() {
+  document.getElementById("title").textContent = DATA.title;
+  document.getElementById("subtitle").textContent = DATA.subtitle;
+  document.getElementById("levels").textContent = maxLevel === 0
+    ? `1 level: ${plural(levelCounts[0], "cluster")}. There were too few chats to group them further.`
+    : `${maxLevel + 1} levels, from ${plural(levelCounts[0], "top-level group")} down to ${plural(levelCounts[maxLevel], "base cluster")}: ${levelCounts.join(" › ")}`;
+}
+
+function renderKpis() {
+  const tiles = [["Chats", totalChats()]];
+  if (USERS.length) tiles.push(["Users", USERS.length]);
+  tiles.push(["Clusters", CLUSTERS.filter((c) => count(c) > 0).length], ["Levels", maxLevel + 1]);
+  document.getElementById("kpis").replaceChildren(...tiles.map(([label, value]) =>
+    el("div", { class: "tile" },
+      el("div", { class: "tile-label" }, label),
+      el("div", { class: "tile-value" }, value.toLocaleString("en-US")))));
+}
+
+function renderFilters() {
+  const box = document.getElementById("filters");
+  if (USERS.length < 2) { box.hidden = true; return; }
+  const chip = (text, value, slot) => el("button", {
+    type: "button", class: "chip", "data-focus": `chip-${value || "all"}`,
+    "aria-pressed": String(state.user === value), onclick: () => setUser(value),
+  }, slot ? swatch(slot) : null, text);
+  keepFocus(box, () => box.replaceChildren(
+    el("span", { class: "filters-label" }, "Show chats from"),
+    chip("All users", null),
+    ...USERS.map((u, i) => chip(`${u.label} (${u.chats})`, u.label, i + 1))));
+}
+
+function renderUsers() {
+  const box = document.getElementById("users");
+  if (!USERS.length) { box.hidden = true; return; }
+  box.replaceChildren(...USERS.map((u, i) => {
+    const top = roots
+      .map((r) => [r, mixOf.get(r.id)[i]])
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3);
+    return el("article", { class: "user-card" },
+      el("div", { class: "user-head" }, swatch(i + 1), el("strong", {}, u.label),
+        el("span", { class: "muted" }, plural(u.chats, "chat"))),
+      el("div", { class: "user-meta" }, `${fmtRange(u.first, u.last)} · ${u.country}`),
+      u.about ? el("p", { class: "user-about" }, u.about) : null,
+      el("div", { class: "user-top-label" }, "Talks most about"),
+      el("ol", { class: "user-top" }, top.map(([r, n]) =>
+        el("li", {}, el("button", { type: "button", class: "link", onclick: () => select(r.id) }, r.name),
+          el("span", { class: "count" }, n)))));
+  }));
+}
+
+function renderViewPicker() {
+  const box = document.getElementById("views");
+  keepFocus(box, () => box.replaceChildren(
+    el("span", { class: "views-label" }, "View"),
+    ...VIEWS.map((v) => el("button", {
+      type: "button", "data-focus": `view-${v.id}`, "aria-pressed": String(state.view === v.id),
+      onclick: () => setView(v.id),
+    }, v.name))));
+  const view = VIEWS.find((v) => v.id === state.view);
+  document.getElementById("help").textContent = view.help;
+
+  document.getElementById("legend").replaceChildren(...legendParts());
+}
+
+function legendParts() {
+  const keys = USERS.map((u, i) => el("span", {}, swatch(i + 1), u.label));
+  if (state.view === "table") return [];
+  if (!USERS.length) {
+    return state.view === "list" || state.view === "flow" ? [] : [el("span", {}, "Darker colors mark higher levels.")];
+  }
+  if (state.view === "list") return [el("span", {}, "The bar next to each cluster shows its mix of users.")];
+  if (state.view === "flow") return [...keys, el("span", {}, "Each band's color shows whose chats it carries.")];
+  if (state.user) {
+    return [el("span", {}, swatch(userSlot.get(state.user)),
+      `Clusters with chats from ${state.user}. Darker means more of the cluster is theirs.`)];
+  }
+  const tie = el("span", { class: "swatch", style: "--c: var(--neutral); opacity: 0.45", "aria-hidden": "true" });
+  return [...keys, el("span", {}, tie, "Tie"),
+    el("span", {}, "Color shows the user with the most chats in a cluster. Paler means the cluster mixes users.")];
+}
+
+// ---------- list view ----------
+function mixBar(c) {
+  if (USERS.length < 2) return el("span", {});
+  const mix = mixOf.get(c.id);
+  const total = mix.reduce((a, b) => a + b, 0) || 1;
+  const bar = el("span", { class: "mix", "data-focus": `mix-${c.id}`, tabindex: "0",
+    "aria-label": USERS.map((u, i) => `${u.label}: ${mix[i]}`).join(", ") });
+  mix.forEach((n, i) => {
+    if (!n) return;
+    const off = state.user && state.user !== USERS[i].label;
+    bar.append(el("span", { class: off ? "off" : null, style: `--c: var(--user-${i + 1}); flex: ${n / total} 1 0` }));
+  });
+  tipEvents(bar, c);
+  return bar;
+}
+
+function listItem(c) {
+  const children = (kids.get(c.id) || []).filter((k) => count(k) > 0);
+  const open = state.expanded.has(c.id);
+  const selected = state.selected === c.id;
+  const toggle = children.length
+    ? el("button", {
+      type: "button", class: "twisty", "data-focus": `twisty-${c.id}`,
+      "aria-label": `${open ? "Collapse" : "Expand"} ${c.name}`,
+      onclick: () => toggleOpen(c.id),
+    }, open ? "▾" : "▸")
+    : el("span", {});
+  const row = el("div", { class: `row level-${c.level}${selected ? " selected" : ""}`, style: `--depth: ${c.level}` },
+    toggle,
+    el("button", { type: "button", class: "name", "data-focus": `name-${c.id}`, onclick: () => select(c.id) }, c.name),
+    mixBar(c),
+    el("span", { class: "count" }, count(c)));
+  const item = el("li", {
+    role: "treeitem", "aria-selected": String(selected),
+    "aria-expanded": children.length ? String(open) : null,
+  }, row);
+  if (children.length && open) item.append(el("ul", { role: "group" }, children.map(listItem)));
+  return item;
+}
+
+function renderList(box) {
+  const tools = el("div", { class: "tools" },
+    el("button", { type: "button", class: "ghost", onclick: () => {
+      for (const c of CLUSTERS) if ((kids.get(c.id) || []).length) state.expanded.add(c.id);
+      renderView();
+    } }, "Expand all"),
+    el("button", { type: "button", class: "ghost", onclick: () => { state.expanded.clear(); renderView(); } }, "Collapse all"));
+  const tree = el("ul", { class: "tree", role: "tree", "aria-label": "Cluster outline" },
+    roots.filter((r) => count(r) > 0).map(listItem));
+  box.replaceChildren(tools, tree);
+}
+
+// ---------- table view ----------
+function renderTable(box) {
+  const rows = [];
+  const walk = (c) => {
+    if (count(c) === 0) return;
+    rows.push(c);
+    for (const k of kids.get(c.id) || []) walk(k);
+  };
+  roots.forEach(walk);
+  const head = el("tr", {}, el("th", { scope: "col", class: "num" }, "Level"), el("th", { scope: "col" }, "Cluster"),
+    el("th", { scope: "col", class: "num" }, "Chats"),
+    USERS.length > 1 ? USERS.map((u) => el("th", { scope: "col", class: "num" }, u.label)) : null);
+  const body = rows.map((c) => el("tr", {},
+    el("td", { class: "num" }, c.level + 1),
+    el("td", { style: `padding-left: ${8 + c.level * 16}px` },
+      el("button", { type: "button", class: "link", onclick: () => select(c.id) }, c.name)),
+    el("td", { class: "num" }, count(c)),
+    USERS.length > 1 ? mixOf.get(c.id).map((n) => el("td", { class: "num" }, n)) : null));
+  box.replaceChildren(el("table", {}, el("thead", {}, head), el("tbody", {}, body)));
+}
+
+// ---------- shared chart helpers ----------
+function chartWidth(box) {
+  return Math.max(560, Math.floor(box.clientWidth || 760));
+}
+function newChart(viewBox, label) {
+  return d3.create("svg").attr("class", "chart").attr("viewBox", viewBox).attr("role", "img").attr("aria-label", label);
+}
+function buildHierarchy() {
+  const make = (c) => ({ c, children: (kids.get(c.id) || []).filter((k) => count(k) > 0).map(make) });
+  const data = { c: null, children: roots.filter((r) => count(r) > 0).map(make) };
+  return d3.hierarchy(data, (d) => (d.children && d.children.length ? d.children : null))
+    .sum((d) => (d.children && d.children.length ? 0 : (d.c ? count(d.c) : 0)))
+    .sort((a, b) => b.value - a.value);
+}
+function fill(selection, getCluster) {
+  return selection
+    .style("fill", (d) => paint(getCluster(d))[0])
+    .style("fill-opacity", (d) => paint(getCluster(d))[1]);
+}
+function bind(selection, getCluster) {
+  return selection
+    .on("click", (event, d) => { const c = getCluster(d); if (c) select(c.id); })
+    .on("pointermove", (event, d) => showTip(getCluster(d), event.clientX, event.clientY))
+    .on("pointerleave", hideTip);
+}
+function isSelected(c) {
+  return Boolean(c && c.id === state.selected);
+}
+function radiusScale(maxValue, low, high) {
+  return (value) => low + (high - low) * Math.sqrt(value / (maxValue || 1));
+}
+
+// ---------- tree (node-link) ----------
+function renderTreeChart(box) {
+  const root = buildHierarchy();
+  const W = chartWidth(box);
+  const labelWidth = Math.min(280, W * 0.34);
+  const rowHeight = 22;
+  const H = Math.max(360, root.leaves().length * rowHeight + 40);
+  const depth = Math.max(1, root.height);
+  const columnWidth = (W - labelWidth - 70) / depth;
+  d3.tree().size([H - 40, depth * columnWidth]).separation((a, b) => (a.parent === b.parent ? 1 : 1.4))(root);
+  const r = radiusScale(root.value, 3, 11);
+  const chart = newChart([0, 0, W, H], "Tree of clusters");
+  const g = chart.append("g").attr("transform", "translate(48, 20)");
+  g.append("g").selectAll("path").data(root.links()).join("path")
+    .attr("class", "link")
+    .attr("stroke-width", (d) => 1 + 5 * Math.sqrt(d.target.value / (root.value || 1)))
+    .attr("d", d3.linkHorizontal().x((d) => d.y).y((d) => d.x));
+  const node = g.append("g").selectAll("g").data(root.descendants()).join("g")
+    .attr("transform", (d) => `translate(${d.y},${d.x})`);
+  node.append("circle").attr("class", "hit").attr("r", 12);
+  fill(node.append("circle")
+    .attr("class", (d) => `node${isSelected(d.data.c) ? " selected" : ""}`)
+    .attr("r", (d) => r(d.value)), (d) => d.data.c);
+  node.filter((d) => !d.children).append("text")
+    .attr("class", "halo nolabel").attr("x", (d) => r(d.value) + 6).attr("dy", "0.32em")
+    .text((d) => fit(d.data.c.name, labelWidth - 10));
+  node.filter((d) => d.children && d.depth > 0).append("text")
+    .attr("class", (d) => `halo nolabel${d.depth === 1 ? " strong" : ""}`)
+    .attr("y", (d) => -r(d.value) - 5).attr("text-anchor", "middle")
+    .text((d) => fit(d.data.c.name, columnWidth * 0.95));
+  node.filter((d) => d.depth === 0).append("text")
+    .attr("class", "halo nolabel strong").attr("x", -8).attr("dy", "0.32em").attr("text-anchor", "end")
+    .text("All");
+  bind(node, (d) => d.data.c);
+  box.replaceChildren(chart.node());
+}
+
+// ---------- radial tree ----------
+function renderRadial(box) {
+  const root = buildHierarchy();
+  const W = Math.min(chartWidth(box), 900);
+  const labelWidth = Math.min(180, W * 0.2);
+  const R = W / 2 - labelWidth - 12;
+  d3.cluster().size([2 * Math.PI, R]).separation((a, b) => (a.parent === b.parent ? 1 : 2) / Math.max(1, a.depth))(root);
+  const r = radiusScale(root.value, 2.5, 9);
+  const chart = newChart([-W / 2, -W / 2, W, W], "Radial tree of clusters");
+  chart.append("g").selectAll("path").data(root.links()).join("path")
+    .attr("class", "link")
+    .attr("stroke-width", (d) => 1 + 4 * Math.sqrt(d.target.value / (root.value || 1)))
+    .attr("d", d3.linkRadial().angle((d) => d.x).radius((d) => d.y));
+  const node = chart.append("g").selectAll("g").data(root.descendants()).join("g")
+    .attr("transform", (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`);
+  node.append("circle").attr("class", "hit").attr("r", 10);
+  fill(node.append("circle")
+    .attr("class", (d) => `node${isSelected(d.data.c) ? " selected" : ""}`)
+    .attr("r", (d) => r(d.value)), (d) => d.data.c);
+  node.filter((d) => !d.children).append("text")
+    .attr("class", "halo nolabel")
+    .attr("dy", "0.32em")
+    .attr("x", (d) => (d.x < Math.PI ? 1 : -1) * (r(d.value) + 5))
+    .attr("text-anchor", (d) => (d.x < Math.PI ? "start" : "end"))
+    .attr("transform", (d) => (d.x >= Math.PI ? "rotate(180)" : null))
+    .text((d) => fit(d.data.c.name, labelWidth));
+  bind(node, (d) => d.data.c);
+  // Top-level group names, written flat so they are easy to read
+  chart.append("g").selectAll("text").data(root.children || []).join("text")
+    .attr("class", "halo nolabel strong")
+    .attr("x", (d) => Math.cos(d.x - Math.PI / 2) * d.y)
+    .attr("y", (d) => Math.sin(d.x - Math.PI / 2) * d.y - r(d.value) - 6)
+    .attr("text-anchor", "middle")
+    .text((d) => fit(d.data.c.name, 150));
+  box.replaceChildren(chart.node());
+}
+
+// ---------- sunburst ----------
+function renderSunburst(box) {
+  const root = buildHierarchy();
+  const W = Math.min(chartWidth(box), 820);
+  const R = W / 2 - 4;
+  d3.partition().size([2 * Math.PI, root.height + 1])(root);
+  const ring = R / (root.height + 1);
+  const arc = d3.arc()
+    .startAngle((d) => d.x0).endAngle((d) => d.x1)
+    .padAngle((d) => Math.min((d.x1 - d.x0) / 2, 0.006)).padRadius(R / 2)
+    .innerRadius((d) => d.y0 * ring).outerRadius((d) => d.y1 * ring - 2);
+  const chart = newChart([-W / 2, -W / 2, W, W], "Sunburst of clusters");
+  const parts = root.descendants().filter((d) => d.depth > 0);
+  bind(fill(chart.append("g").selectAll("path").data(parts).join("path")
+    .attr("class", (d) => `node${isSelected(d.data.c) ? " selected" : ""}`)
+    .attr("d", arc), (d) => d.data.c), (d) => d.data.c);
+  chart.append("g").selectAll("text").data(parts.filter((d) => (d.x1 - d.x0) * ((d.y0 + d.y1) / 2) * ring > 14)).join("text")
+    .attr("class", (d) => `halo nolabel${d.depth === 1 ? " strong" : ""}`)
+    .attr("dy", "0.32em").attr("text-anchor", "middle")
+    .attr("transform", (d) => {
+      const angle = (((d.x0 + d.x1) / 2) * 180) / Math.PI;
+      const radius = ((d.y0 + d.y1) / 2) * ring;
+      return `rotate(${angle - 90}) translate(${radius},0) rotate(${angle < 180 ? 0 : 180})`;
+    })
+    .text((d) => fit(d.data.c.name, ring - 10));
+  const center = chart.append("g").style("cursor", "default");
+  center.append("circle").attr("r", ring - 2).style("fill", "var(--wash)");
+  center.append("text").attr("class", "hero nolabel").attr("text-anchor", "middle").attr("dy", "0.1em")
+    .text(totalChats().toLocaleString("en-US"));
+  center.append("text").attr("class", "nolabel").attr("text-anchor", "middle").attr("dy", "1.6em").text("chats");
+  box.replaceChildren(chart.node());
+}
+
+// ---------- icicle ----------
+function renderIcicle(box) {
+  const root = buildHierarchy();
+  const W = chartWidth(box);
+  const H = Math.max(420, Math.min(1400, root.leaves().length * 24));
+  d3.partition().size([H, W]).padding(2)(root);
+  const chart = newChart([0, 0, W, H], "Icicle chart of clusters");
+  const cell = chart.append("g").selectAll("g").data(root.descendants()).join("g")
+    .attr("transform", (d) => `translate(${d.y0},${d.x0})`);
+  bind(fill(cell.append("rect")
+    .attr("class", (d) => `node${isSelected(d.data.c) ? " selected" : ""}`)
+    .attr("rx", 2)
+    .attr("width", (d) => Math.max(0, d.y1 - d.y0 - 2))
+    .attr("height", (d) => Math.max(0, d.x1 - d.x0)), (d) => d.data.c), (d) => d.data.c);
+  const labeled = cell.filter((d) => d.x1 - d.x0 >= 16);
+  labeled.append("text")
+    .attr("class", (d) => `halo nolabel${d.depth <= 1 ? " strong" : ""}`)
+    .attr("x", 6).attr("y", 15)
+    .text((d) => fit(d.data.c ? d.data.c.name : "All chats", d.y1 - d.y0 - 14));
+  labeled.filter((d) => d.x1 - d.x0 >= 34).append("text")
+    .attr("class", "halo nolabel").attr("x", 6).attr("y", 30)
+    .text((d) => plural(d.value, "chat"));
+  box.replaceChildren(chart.node());
+}
+
+// ---------- treemap ----------
+function renderTreemap(box) {
+  const root = buildHierarchy();
+  const W = chartWidth(box);
+  const H = Math.round(W * 0.7);
+  d3.treemap().tile(d3.treemapSquarify).size([W, H]).round(true)
+    .paddingOuter(3).paddingInner(2).paddingTop((d) => (d.depth === 1 ? 22 : 3))(root);
+  const chart = newChart([0, 0, W, H], "Treemap of clusters");
+  const groups = root.descendants().filter((d) => d.depth >= 1 && d.children);
+  chart.append("g").selectAll("rect").data(groups).join("rect")
+    .attr("class", (d) => (d.depth === 1 ? "frame" : "outline"))
+    .attr("rx", 3)
+    .attr("x", (d) => d.x0).attr("y", (d) => d.y0)
+    .attr("width", (d) => d.x1 - d.x0).attr("height", (d) => d.y1 - d.y0);
+  bind(chart.append("g").selectAll("text").data(groups.filter((d) => d.depth === 1)).join("text")
+    .attr("class", "halo strong").attr("x", (d) => d.x0 + 6).attr("y", (d) => d.y0 + 15)
+    .style("cursor", "pointer")
+    .text((d) => fit(`${d.data.c.name} · ${d.value}`, d.x1 - d.x0 - 12, 12, 600)), (d) => d.data.c);
+  const leaf = chart.append("g").selectAll("g").data(root.leaves()).join("g")
+    .attr("transform", (d) => `translate(${d.x0},${d.y0})`);
+  bind(fill(leaf.append("rect")
+    .attr("class", (d) => `node${isSelected(d.data.c) ? " selected" : ""}`)
+    .attr("rx", 2)
+    .attr("width", (d) => Math.max(0, d.x1 - d.x0)).attr("height", (d) => Math.max(0, d.y1 - d.y0)),
+  (d) => d.data.c), (d) => d.data.c);
+  const named = leaf.filter((d) => d.x1 - d.x0 > 50 && d.y1 - d.y0 > 20);
+  named.append("text").attr("class", "halo nolabel").attr("x", 5).attr("y", 14)
+    .text((d) => fit(d.data.c.name, d.x1 - d.x0 - 10));
+  named.filter((d) => d.y1 - d.y0 > 36).append("text").attr("class", "halo nolabel").attr("x", 5).attr("y", 29)
+    .text((d) => plural(d.value, "chat"));
+  box.replaceChildren(chart.node());
+}
+
+// ---------- circle packing ----------
+function renderPack(box) {
+  const root = buildHierarchy();
+  const W = Math.min(chartWidth(box), 860);
+  d3.pack().size([W, W]).padding((d) => (d.depth === 0 ? 8 : 4))(root);
+  const chart = newChart([0, 0, W, W], "Circle packing of clusters");
+  const node = chart.append("g").selectAll("circle").data(root.descendants()).join("circle")
+    .attr("cx", (d) => d.x).attr("cy", (d) => d.y).attr("r", (d) => d.r)
+    .attr("class", (d) => (d.children ? (d.depth === 0 ? "outline" : "frame") : "node")
+      + (isSelected(d.data.c) ? " selected" : ""));
+  fill(node.filter((d) => !d.children), (d) => d.data.c);
+  bind(node.filter((d) => d.depth > 0), (d) => d.data.c);
+  chart.append("g").selectAll("text").data(root.descendants().filter((d) => d.depth === 1 && d.r > 34)).join("text")
+    .attr("class", "halo nolabel strong").attr("text-anchor", "middle")
+    .attr("x", (d) => d.x).attr("y", (d) => d.y - d.r + 16)
+    .text((d) => fit(d.data.c.name, d.r * 1.5, 12, 600));
+  chart.append("g").selectAll("text").data(root.leaves().filter((d) => d.r > 24)).join("text")
+    .attr("class", "halo nolabel").attr("text-anchor", "middle")
+    .attr("x", (d) => d.x).attr("y", (d) => d.y).attr("dy", "0.32em")
+    .text((d) => fit(d.data.c.name, d.r * 1.9 - 6, 11));
+  box.replaceChildren(chart.node());
+}
+
+// ---------- network graph ----------
+function renderNetwork(box) {
+  const W = chartWidth(box);
+  const H = Math.max(520, Math.round(W * 0.72));
+  const shown = CLUSTERS.filter((c) => count(c) > 0);
+  const r = radiusScale(Math.max(1, ...shown.map(count)), 3, 14);
+  const nodes = shown.map((c) => ({ id: c.id, c, kind: "cluster", radius: r(count(c)) }));
+  USERS.forEach((u, i) => {
+    if (USERS.length > 1 && (!state.user || state.user === u.label)) {
+      nodes.push({ id: `user:${u.label}`, user: u, slot: i + 1, kind: "user", radius: 16 });
+    }
+  });
+  const ids = new Set(nodes.map((n) => n.id));
+  const links = [];
+  for (const c of shown) {
+    if (c.parent && ids.has(c.parent)) links.push({ source: c.parent, target: c.id, kind: "tree", level: c.level });
+  }
+  for (const c of shown.filter((x) => x.level === maxLevel)) {
+    USERS.forEach((u, i) => {
+      const n = mixOf.get(c.id)[i];
+      if (n && ids.has(`user:${u.label}`)) links.push({ source: `user:${u.label}`, target: c.id, kind: "user", slot: i + 1, value: n });
+    });
+  }
+  const simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id((d) => d.id)
+      .distance((l) => (l.kind === "tree" ? 22 + 14 * (maxLevel - l.level + 1) : 70))
+      .strength((l) => (l.kind === "tree" ? 0.8 : 0.12)))
+    .force("charge", d3.forceManyBody().strength((d) => (d.kind === "user" ? -900 : -60 - 6 * d.radius)))
+    .force("collide", d3.forceCollide((d) => d.radius + 4))
+    .force("x", d3.forceX(W / 2).strength(0.03))
+    .force("y", d3.forceY(H / 2).strength(0.05))
+    .stop();
+  for (let i = 0; i < 400; i += 1) simulation.tick();
+  for (const n of nodes) {
+    n.x = Math.max(n.radius + 4, Math.min(W - n.radius - 4, n.x));
+    n.y = Math.max(n.radius + 18, Math.min(H - n.radius - 18, n.y));
+  }
+  const chart = newChart([0, 0, W, H], "Network of users and clusters");
+  chart.append("g").selectAll("line").data(links).join("line")
+    .attr("class", (l) => (l.kind === "tree" ? "link" : "flow"))
+    .attr("x1", (l) => l.source.x).attr("y1", (l) => l.source.y)
+    .attr("x2", (l) => l.target.x).attr("y2", (l) => l.target.y)
+    .style("stroke", (l) => (l.kind === "user" ? `var(--user-${l.slot})` : null))
+    .style("stroke-opacity", (l) => (l.kind === "user" ? 0.4 : null))
+    .attr("stroke-width", (l) => (l.kind === "user" ? 1 + 1.4 * Math.sqrt(l.value) : 1.2));
+  const clusterNodes = chart.append("g").selectAll("g").data(nodes.filter((n) => n.kind === "cluster")).join("g")
+    .attr("transform", (n) => `translate(${n.x},${n.y})`);
+  clusterNodes.append("circle").attr("class", "hit").attr("r", (n) => Math.max(12, n.radius + 3));
+  fill(clusterNodes.append("circle")
+    .attr("class", (n) => `node${isSelected(n.c) ? " selected" : ""}`)
+    .attr("r", (n) => n.radius), (n) => n.c);
+  bind(clusterNodes, (n) => n.c);
+  // Keep each label's middle far enough from the edges that the whole label fits
+  const topLabels = nodes.filter((n) => n.kind === "cluster" && n.c.level === 0)
+    .map((n) => ({ n, text: fit(n.c.name, 170, 12, 600) }))
+    .map((l) => ({ ...l, half: textWidth(l.text, 12, 600) / 2 + 4 }));
+  chart.append("g").selectAll("text").data(topLabels).join("text")
+    .attr("class", "halo nolabel strong").attr("text-anchor", "middle")
+    .attr("x", (l) => Math.max(l.half, Math.min(W - l.half, l.n.x)))
+    .attr("y", (l) => Math.max(14, l.n.y - l.n.radius - 6))
+    .text((l) => l.text);
+  const userNodes = chart.append("g").selectAll("g").data(nodes.filter((n) => n.kind === "user")).join("g")
+    .attr("transform", (n) => `translate(${n.x},${n.y})`);
+  userNodes.append("rect").attr("class", "node").attr("x", -12).attr("y", -12).attr("width", 24).attr("height", 24).attr("rx", 5)
+    .style("fill", (n) => `var(--user-${n.slot})`).style("cursor", "pointer")
+    .on("click", (event, n) => setUser(state.user === n.user.label ? null : n.user.label));
+  userNodes.append("text").attr("class", "halo nolabel strong").attr("text-anchor", "middle").attr("y", 28)
+    .text((n) => n.user.label);
+  box.replaceChildren(chart.node());
+}
+
+// ---------- flow (sankey) ----------
+function renderFlow(box) {
+  if (!HAS_SANKEY) {
+    box.replaceChildren(el("p", { class: "notice" }, "This view needs the d3-sankey library, which could not be loaded."));
+    return;
+  }
+  const W = chartWidth(box);
+  const tops = roots.filter((r) => count(r) > 0);
+  const second = maxLevel >= 1
+    ? tops.flatMap((t) => (kids.get(t.id) || []).filter((k) => count(k) > 0))
+    : [];
+  const nodes = [];
+  const links = [];
+  const users = USERS.map((u, i) => ({ u, slot: i + 1 })).filter(({ u }) => !state.user || state.user === u.label);
+  if (USERS.length) {
+    for (const { u, slot } of users) nodes.push({ id: `user:${u.label}`, name: u.label, slot, kind: "user" });
+    for (const t of tops) {
+      for (const { u, slot } of users) {
+        const n = mixOf.get(t.id)[slot - 1];
+        if (n) links.push({ source: `user:${u.label}`, target: t.id, value: n, slot });
+      }
+    }
+    for (const c of second) {
+      for (const { slot } of users) {
+        const n = mixOf.get(c.id)[slot - 1];
+        if (n) links.push({ source: c.parent, target: c.id, value: n, slot });
+      }
+    }
+  } else {
+    nodes.push({ id: "all", name: "All chats", kind: "root" });
+    for (const t of tops) links.push({ source: "all", target: t.id, value: count(t), slot: 1 });
+    for (const c of second) links.push({ source: c.parent, target: c.id, value: count(c), slot: 1 });
+  }
+  for (const c of [...tops, ...second]) nodes.push({ id: c.id, name: c.name, c, kind: "cluster" });
+  const H = Math.max(420, Math.max(tops.length, second.length, users.length) * 30 + 40);
+  // Every label sits to the right of its bar, so keep room on the right for the last column
+  const rightRoom = Math.min(280, W * 0.3);
+  const layout = d3.sankey().nodeId((d) => d.id).nodeWidth(12).nodePadding(12).nodeSort(null)
+    .extent([[0, 10], [W - rightRoom, H - 10]]);
+  const graph = layout({ nodes: nodes.map((d) => ({ ...d })), links: links.map((d) => ({ ...d })) });
+  const chart = newChart([0, 0, W, H], "Flow of chats from users into clusters");
+  chart.append("g").selectAll("path").data(graph.links).join("path")
+    .attr("class", "flow")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .style("stroke", (l) => `var(--user-${l.slot})`)
+    .style("stroke-opacity", 0.35)
+    .attr("stroke-width", (l) => Math.max(1, l.width))
+    .on("pointermove", (event, l) => showFlowTip(l, event.clientX, event.clientY))
+    .on("pointerleave", hideTip);
+  const node = chart.append("g").selectAll("g").data(graph.nodes).join("g");
+  node.append("rect")
+    .attr("class", (d) => `node${isSelected(d.c) ? " selected" : ""}`)
+    .attr("x", (d) => d.x0).attr("y", (d) => d.y0)
+    .attr("width", (d) => d.x1 - d.x0).attr("height", (d) => Math.max(1, d.y1 - d.y0))
+    .attr("rx", 2)
+    .style("fill", (d) => (d.kind === "user" ? `var(--user-${d.slot})` : "var(--neutral)"))
+    .style("fill-opacity", (d) => (d.kind === "user" ? 1 : 0.75));
+  bind(node.filter((d) => d.kind === "cluster"), (d) => d.c);
+  node.filter((d) => d.kind === "user").style("cursor", "pointer")
+    .on("click", (event, d) => setUser(state.user === d.name ? null : d.name));
+  // A label may run until the next column of bars, or to the edge for the last column
+  const columnStarts = [...new Set(graph.nodes.map((d) => d.x0))].sort((a, b) => a - b);
+  const room = (d) => {
+    const next = columnStarts.find((x) => x > d.x0);
+    return (next === undefined ? W : next) - d.x1 - 14;
+  };
+  node.append("text")
+    .attr("class", (d) => `halo nolabel${d.kind !== "cluster" || d.c.level === 0 ? " strong" : ""}`)
+    .attr("x", (d) => d.x1 + 6)
+    .attr("y", (d) => (d.y0 + d.y1) / 2).attr("dy", "0.32em")
+    .text((d) => fit(`${d.name} · ${d.value}`, room(d), 12, d.kind !== "cluster" || d.c.level === 0 ? 600 : 400));
+  box.replaceChildren(chart.node());
+}
+
+// ---------- map (Kura's 2D layout) ----------
+function levelName(level) {
+  if (level === 0) return "Top-level groups";
+  if (level === maxLevel) return `Level ${level + 1} (base clusters)`;
+  return `Level ${level + 1}`;
+}
+function renderMap(box) {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const svgEl = (tag, attrs) => {
+    const node = document.createElementNS(SVG_NS, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    return node;
+  };
+  const W = 760, H = 480, PAD = 30;
+  const items = CLUSTERS.filter((c) => c.level === state.mapLevel);
+  const xs = items.map((c) => c.x), ys = items.map((c) => c.y);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const sx = (v) => PAD + (x1 === x0 ? 0.5 : (v - x0) / (x1 - x0)) * (W - 2 * PAD);
+  const sy = (v) => PAD + (y1 === y0 ? 0.5 : (y1 - v) / (y1 - y0)) * (H - 2 * PAD);
+  const maxCount = Math.max(1, ...items.map((c) => c.chats.length));
+  const radius = (c) => 5 + 17 * Math.sqrt(c.chats.length / maxCount);
+  const chart = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "group", "aria-label": "Map of clusters" });
+  const dots = [];
+  for (const c of [...items].sort((a, b) => b.chats.length - a.chats.length)) {
+    const cx = sx(c.x), cy = sy(c.y), r = radius(c);
+    const g = svgEl("g", { tabindex: 0, role: "button", "data-focus": `dot-${c.id}`, "aria-label": `${c.name}, ${plural(count(c), "chat")}` });
+    g.append(svgEl("circle", { class: "hit", cx, cy, r: Math.max(r + 4, 12) }));
+    const [color, opacity] = paint(c);
+    const dot = svgEl("circle", { class: `node${isSelected(c) ? " selected" : ""}`, cx, cy, r });
+    dot.style.fill = count(c) > 0 ? color : "var(--grid)";
+    dot.style.fillOpacity = count(c) > 0 ? opacity : 1;
+    g.append(dot);
+    g.addEventListener("click", () => select(c.id));
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(c.id); }
+    });
+    tipEvents(g, c);
+    dots.push({ c, g, cx, cy, r });
+  }
+  const boxes = [];
+  const labels = [];
+  for (const { c, cx, cy, r } of [...dots].sort((a, b) => count(b.c) - count(a.c)).slice(0, 8)) {
+    if (count(c) === 0) continue;
+    const text = fit(c.name, 220);
+    const width = textWidth(text);
+    const right = cx + r + 6 + width < W;
+    const x = right ? cx + r + 6 : cx - r - 6;
+    const area = { x0: right ? x : x - width, x1: right ? x + width : x, y0: cy - 9, y1: cy + 5 };
+    if (boxes.some((b) => b.x0 < area.x1 && area.x0 < b.x1 && b.y0 < area.y1 && area.y0 < b.y1)) continue;
+    boxes.push(area);
+    const label = svgEl("text", { class: "halo nolabel", x, y: cy + 4, "text-anchor": right ? "start" : "end" });
+    label.textContent = text;
+    labels.push(label);
+  }
+  chart.append(...dots.map((d) => d.g), ...labels);
+  const select_ = el("select", { id: "map-level" }, levelCounts.map((n, level) =>
+    el("option", { value: level, selected: level === state.mapLevel }, `${levelName(level)} (${n})`)));
+  select_.addEventListener("change", () => { state.mapLevel = Number(select_.value); renderView(); });
+  box.replaceChildren(
+    el("div", { class: "tools" }, el("label", { for: "map-level" }, "Show"), select_),
+    el("figure", { style: "margin: 0" }, chart,
+      el("figcaption", {}, "Kura places clusters with similar descriptions near each other. Use the Table view for the exact numbers.")));
+}
+
+// ---------- views ----------
+const RENDERERS = {
+  list: renderList, table: renderTable, tree: renderTreeChart, radial: renderRadial,
+  sunburst: renderSunburst, icicle: renderIcicle, treemap: renderTreemap, pack: renderPack,
+  network: renderNetwork, flow: renderFlow, map: renderMap,
+};
+function renderView() {
+  const box = document.getElementById("view");
+  const view = VIEWS.find((v) => v.id === state.view);
+  hideTip();
+  if (view.d3 && !HAS_D3) {
+    box.replaceChildren(el("p", { class: "notice" }, "This view needs the D3 chart library, which could not be loaded. The List, Map, and Table views still work."));
+    return;
+  }
+  keepFocus(box, () => RENDERERS[view.id](box));
+}
+
+// ---------- details ----------
+function chatItem(chat) {
+  const slot = userSlot.get(chat.user);
+  const meta = [chat.user, fmtDate(chat.date), plural(chat.turns, "turn")].filter(Boolean).join(" · ");
+  const conversation = el("details", { class: "conv" }, el("summary", {}, "Show conversation"));
+  conversation.addEventListener("toggle", () => {
+    if (!conversation.open || conversation.children.length > 1) return;
+    conversation.append(...chat.messages.map(([role, text]) =>
+      el("div", { class: `msg ${role}` },
+        el("div", { class: "msg-role" }, role === "user" ? "User" : "Assistant"),
+        el("div", { class: "msg-text" }, text))));
+  });
+  return el("article", { class: "chat" },
+    el("div", { class: "chat-meta" }, slot ? swatch(slot) : null, meta),
+    el("p", { class: "chat-summary" }, chat.summary || "(no summary)"),
+    conversation);
+}
+
+function renderDetails() {
+  const box = document.getElementById("details");
+  const c = byId.get(state.selected);
+  if (!c) {
+    box.replaceChildren(el("p", { class: "muted" }, "Pick a cluster to see its chats."));
+    return;
+  }
+  const parts = [];
+  const path = ancestors(c);
+  if (path.length) {
+    parts.push(el("nav", { class: "crumbs", "aria-label": "Cluster path" },
+      path.map((p, i) => [
+        i ? el("span", { "aria-hidden": "true" }, "›") : null,
+        el("button", { type: "button", class: "crumb", onclick: () => select(p.id) }, p.name),
+      ])));
+  }
+  const n = count(c);
+  parts.push(
+    el("h2", { class: "detail-title" }, c.name),
+    el("p", { class: "detail-desc" }, c.description),
+    el("p", { class: "detail-stats" },
+      `Level ${c.level + 1} of ${maxLevel + 1} · ${plural(n, "chat")}${state.user ? ` from ${state.user}` : ""}`));
+  if (USERS.length > 1) {
+    const mix = mixOf.get(c.id);
+    parts.push(el("div", { class: "breakdown", "aria-label": "Chats per user" },
+      USERS.map((u, i) => el("span", {}, swatch(i + 1), `${u.label}: ${mix[i]}`))));
+  }
+  const children = (kids.get(c.id) || []).filter((k) => count(k) > 0);
+  if (children.length) {
+    parts.push(el("h3", {}, "Smaller clusters inside"),
+      el("ul", { class: "sub-list" }, children.map((k) =>
+        el("li", {}, el("button", { type: "button", class: "link", onclick: () => select(k.id) }, k.name),
+          el("span", { class: "count" }, count(k))))));
+  }
+  const chats = c.chats
+    .map((id) => DATA.chats[id])
+    .filter((chat) => chat && (!state.user || chat.user === state.user))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const limit = state.showAll ? chats.length : 40;
+  parts.push(el("h3", {}, `Chats (${chats.length})`), el("div", {}, chats.slice(0, limit).map(chatItem)));
+  if (chats.length > limit) {
+    parts.push(el("button", { type: "button", class: "ghost more", onclick: () => { state.showAll = true; renderDetails(); } },
+      `Show all ${chats.length} chats`));
+  }
+  box.replaceChildren(...parts);
+}
+
+// ---------- state changes ----------
+function saveHash() {
+  const params = new URLSearchParams();
+  params.set("view", state.view);
+  if (state.user) params.set("user", state.user);
+  if (state.view === "map") params.set("level", String(state.mapLevel));
+  history.replaceState(null, "", `#${params}`);
+}
+function loadHash() {
+  const params = new URLSearchParams(location.hash.slice(1));
+  const view = params.get("view");
+  if (VIEWS.some((v) => v.id === view)) state.view = view;
+  const user = params.get("user");
+  if (userSlot.has(user)) state.user = user;
+  const level = Number(params.get("level"));
+  if (Number.isInteger(level) && level >= 0 && level <= maxLevel && params.has("level")) state.mapLevel = level;
+}
+// Keep the details useful: if the open cluster has none of the picked user's chats, open their biggest group
+function pickVisibleSelection() {
+  const open = byId.get(state.selected);
+  if (open && count(open) > 0) return;
+  const biggest = roots.filter((r) => count(r) > 0).sort((a, b) => count(b) - count(a))[0];
+  if (biggest) state.selected = biggest.id;
+}
+function setUser(user) {
+  state.user = user;
+  state.showAll = false;
+  pickVisibleSelection();
+  renderKpis();
+  renderFilters();
+  renderViewPicker();
+  renderView();
+  renderDetails();
+  saveHash();
+}
+function setView(view) {
+  state.view = view;
+  renderViewPicker();
+  renderView();
+  saveHash();
+}
+function select(id) {
+  const c = byId.get(id);
+  if (!c) return;
+  state.selected = id;
+  state.showAll = false;
+  for (const a of ancestors(c)) state.expanded.add(a.id);
+  renderView();
+  renderDetails();
+  document.getElementById("details").scrollTop = 0;
+}
+function toggleOpen(id) {
+  if (state.expanded.has(id)) state.expanded.delete(id);
+  else state.expanded.add(id);
+  renderView();
+}
+
+// ---------- theme ----------
+const themeButton = document.getElementById("theme");
+const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+function currentTheme() {
+  return document.documentElement.dataset.theme || (darkQuery.matches ? "dark" : "light");
+}
+function renderThemeButton() {
+  themeButton.textContent = currentTheme() === "dark" ? "Light mode" : "Dark mode";
+}
+try {
+  const saved = localStorage.getItem("kura-report-theme");
+  if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+} catch (e) { /* storage can be blocked; the system theme still applies */ }
+themeButton.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("kura-report-theme", next); } catch (e) { /* ignore */ }
+  renderThemeButton();
+});
+darkQuery.addEventListener("change", renderThemeButton);
+
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderView, 150);
+});
+
+loadHash();
+pickVisibleSelection();
+renderThemeButton();
+renderHeader();
+renderKpis();
+renderFilters();
+renderUsers();
+renderViewPicker();
+renderView();
+renderDetails();
+</script>
+</body>
+</html>

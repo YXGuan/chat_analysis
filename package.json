@@ -1,0 +1,9 @@
+{
+  "name": "temporal-kura",
+  "private": true,
+  "scripts": {
+    "setup:codex": "npm install --prefix .local/tools --no-save --ignore-scripts @openai/codex@0.163.0",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix ui run build"
+  }
+}

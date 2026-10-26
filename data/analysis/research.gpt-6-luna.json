@@ -1,0 +1,963 @@
+{
+  "title": "Science and physics reference chats: retrospective subject hierarchy",
+  "topics": [
+    {
+      "id": "bio",
+      "parent_id": null,
+      "name": "Genomics and biomedical science",
+      "description": "Questions about genomic data, biological interpretation, and bioinformatics workflows."
+    },
+    {
+      "id": "software",
+      "parent_id": null,
+      "name": "Software and computer workflows",
+      "description": "Programming help and practical command-line, desktop, and hardware tasks."
+    },
+    {
+      "id": "numerics",
+      "parent_id": null,
+      "name": "Computational physics and numerical methods",
+      "description": "Particle-based physical simulation, numerical solvers, and statistical modeling methods."
+    },
+    {
+      "id": "traffic",
+      "parent_id": null,
+      "name": "Traffic-flow modeling",
+      "description": "Microscopic and macroscopic traffic models, equations, and simulations."
+    },
+    {
+      "id": "career",
+      "parent_id": null,
+      "name": "Academic and professional communication",
+      "description": "Writing and preparation for research, job, and academic opportunities."
+    },
+    {
+      "id": "bio_seq",
+      "parent_id": "bio",
+      "name": "Sequencing and genome analysis",
+      "description": "Read alignment, assembly, transcript quantification, and sequence-derived data."
+    },
+    {
+      "id": "bio_concepts",
+      "parent_id": "bio",
+      "name": "Genomics and biomedical concepts",
+      "description": "Biological interpretation, gene-family comparisons, and mutation or allele-frequency concepts."
+    },
+    {
+      "id": "bio_tools",
+      "parent_id": "bio",
+      "name": "Bioinformatics software and pipelines",
+      "description": "Code and workflow tasks directly tied to genomic data processing and analysis."
+    },
+    {
+      "id": "sw_code",
+      "parent_id": "software",
+      "name": "Programming and code troubleshooting",
+      "description": "General code review, optimization, translation, and debugging."
+    },
+    {
+      "id": "sw_cli",
+      "parent_id": "software",
+      "name": "Shell commands and file handling",
+      "description": "Command-line filtering, path parsing, file renaming, and system-output formatting."
+    },
+    {
+      "id": "sw_system",
+      "parent_id": "software",
+      "name": "Desktop configuration and hardware",
+      "description": "Linux desktop and terminal configuration, styling, and computer hardware questions."
+    },
+    {
+      "id": "num_particle",
+      "parent_id": "numerics",
+      "name": "Particle-based mechanics simulation",
+      "description": "SPH and material point method simulations, including fracture and implementation variants."
+    },
+    {
+      "id": "num_solvers",
+      "parent_id": "numerics",
+      "name": "Numerical solver implementation",
+      "description": "GMRES and conjugate-gradient solver code and performance."
+    },
+    {
+      "id": "num_stats",
+      "parent_id": "numerics",
+      "name": "Statistical modeling methods",
+      "description": "Questions about Bayesian hierarchical models and distribution choice."
+    },
+    {
+      "id": "traffic_sim",
+      "parent_id": "traffic",
+      "name": "Traffic simulation implementation",
+      "description": "Implementing, debugging, plotting, and modifying car-following simulations."
+    },
+    {
+      "id": "traffic_theory",
+      "parent_id": "traffic",
+      "name": "Traffic model equations and behavior",
+      "description": "Interpreting, deriving, and comparing microscopic and macroscopic traffic models."
+    },
+    {
+      "id": "career_writing",
+      "parent_id": "career",
+      "name": "Research and job communication",
+      "description": "Academic achievement wording, job applications, cover letters, and interview preparation."
+    }
+  ],
+  "conversations": [
+    {
+      "chat_id": "1935460",
+      "topic_id": "bio_concepts",
+      "summary": "Asks whether assigning disability weight 1 to postoperative deaths belongs in YLD or YLL, then asks how to grep for either of two terms.",
+      "confidence": 0.81,
+      "note": "The chat contains a secondary technical question; assigned by its primary scientific question."
+    },
+    {
+      "chat_id": "1937369",
+      "topic_id": "sw_cli",
+      "summary": "Asks how to grep CSV lines containing either EQUINO or HIDAT.",
+      "confidence": 0.81,
+      "note": "The chat contains a secondary technical question; assigned by its primary scientific question."
+    },
+    {
+      "chat_id": "1977212",
+      "topic_id": "bio_seq",
+      "summary": "Seeks a bacterial WGS alignment workflow and BWA-MEM settings, and asks whether aligned SAM reads constitute an assembled genome.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2047662",
+      "topic_id": "sw_code",
+      "summary": "Requests faster, more efficient code but supplies no code in the retained turn.",
+      "confidence": 0.38,
+      "note": "The user requests code optimization but no code or domain is retained."
+    },
+    {
+      "chat_id": "2047664",
+      "topic_id": "bio_tools",
+      "summary": "Requests refactoring and optimization of Python code that reads a genome and parses gene annotations.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2048490",
+      "topic_id": "bio_tools",
+      "summary": "Requests efficiency improvements for a Python script that filters genomic SNP data and calculates coverage summaries.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2049135",
+      "topic_id": "bio_tools",
+      "summary": "Requests translation of a C++ population-genetics p-value and bootstrap program into Rust.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2058170",
+      "topic_id": "bio_tools",
+      "summary": "Asks how to extract a filename stem from a Nextflow parameter.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2082714",
+      "topic_id": "bio_concepts",
+      "summary": "Asks what derived allele frequency means in a population mutation summary.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2111387",
+      "topic_id": "career_writing",
+      "summary": "Edits and translates a short announcement about receiving a university academic distinction.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2160576",
+      "topic_id": "career_writing",
+      "summary": "Drafts and revises an email expressing interest in a Rust genomics engineering role.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2191566",
+      "topic_id": "career_writing",
+      "summary": "Uses CV details to draft and simplify responses for a research-lab cover letter.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2192674",
+      "topic_id": "career_writing",
+      "summary": "Asks for a researcher’s work email address.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2194053",
+      "topic_id": "bio_seq",
+      "summary": "Asks how to plot a histogram of genomic lengths with normalized amplitude on the y-axis.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2234582",
+      "topic_id": "career_writing",
+      "summary": "Asks how to respond to an interview invitation and whether to request recommendations or preparation advice.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2236569",
+      "topic_id": "bio_concepts",
+      "summary": "Asks about M. tuberculosis PPE/PE gene families and finding homologs in E. coli.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2245592",
+      "topic_id": "sw_system",
+      "summary": "Asks whether a lower-current laptop charger can replace the original charger.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2265250",
+      "topic_id": "bio_seq",
+      "summary": "Asks how kallisto produces BAM flags for paired-end reads in genome BAM output.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2295763",
+      "topic_id": "sw_system",
+      "summary": "Asks whether focused i3 workspace text can display its number and label in separate colors.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2296011",
+      "topic_id": "sw_cli",
+      "summary": "Asks how to combine disk-space and memory command output into one slash-separated string.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2297010",
+      "topic_id": "sw_system",
+      "summary": "Shares tmux configuration and asks for help with its settings.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2306739",
+      "topic_id": "sw_cli",
+      "summary": "Works on extracting sample identifiers from nested file paths in shell scripts.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2306736",
+      "topic_id": "sw_cli",
+      "summary": "Works on extracting sample identifiers from nested file paths in shell scripts.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2306747",
+      "topic_id": "sw_cli",
+      "summary": "Works on extracting sample identifiers from nested file paths in shell scripts.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2306982",
+      "topic_id": "sw_code",
+      "summary": "Asks how to rename Python-discovered interval files with a .bed extension.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "2307258",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2308170",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2308942",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2312203",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2312225",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2312333",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2312415",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2313271",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2315067",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2315211",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2315398",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2316930",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2340694",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2341051",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "2343360",
+      "topic_id": "bio_tools",
+      "summary": "Debugs or designs Rust code for parallel genomic track and exon processing, data structures, concurrency, or output.",
+      "confidence": 0.85,
+      "note": "Although phrased as code debugging, the retained code concerns genomic track and exon processing; classification follows that subject matter."
+    },
+    {
+      "chat_id": "3946384",
+      "topic_id": "num_particle",
+      "summary": "Contains only a greeting, so the retained turn does not establish a substantive topic.",
+      "confidence": 0.2,
+      "note": "Only a greeting is retained; assignment is weak and based on adjacent subject context."
+    },
+    {
+      "chat_id": "3946425",
+      "topic_id": "num_particle",
+      "summary": "Requests a three-dimensional smoothed particle hydrodynamics simulator in Taichi.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3947279",
+      "topic_id": "num_solvers",
+      "summary": "Presents Taichi GMRES solver code and seeks implementation help.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3947361",
+      "topic_id": "num_solvers",
+      "summary": "Presents Taichi GMRES solver code and seeks implementation help.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3947810",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3953705",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3953736",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3953820",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3953857",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3954070",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3955143",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3955240",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3955328",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3960255",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3960544",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3960945",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961011",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961109",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961476",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961604",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961672",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961822",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3961918",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3962071",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3962125",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3962258",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3962302",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3962370",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987243",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987437",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987543",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987568",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987588",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987610",
+      "topic_id": "num_particle",
+      "summary": "Iterates on Taichi material point method code, including phase-field fracture, constitutive updates, and iterative linear solvers.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987783",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987833",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987838",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987863",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987925",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "3987926",
+      "topic_id": "num_particle",
+      "summary": "Requests or revises a C++ material point method simulator using Taichi headers and graphics.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "4002420",
+      "topic_id": "num_solvers",
+      "summary": "Requests a fast matrix-free conjugate-gradient solver in Taichi.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "4048098",
+      "topic_id": "num_particle",
+      "summary": "Presents Taichi material point method simulation code for debugging or improvement.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "4048123",
+      "topic_id": "num_particle",
+      "summary": "Presents Taichi material point method simulation code for debugging or improvement.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "4048206",
+      "topic_id": "num_particle",
+      "summary": "Presents Taichi material point method simulation code for debugging or improvement.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "253595",
+      "topic_id": "traffic_sim",
+      "summary": "Requests a MATLAB traffic simulation using the Krauss car-following equations, with heterogeneous cars and animation.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "253774",
+      "topic_id": "traffic_sim",
+      "summary": "Troubleshoots a MATLAB traffic simulation whose final frame shows no car movement.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "254221",
+      "topic_id": "traffic_sim",
+      "summary": "Requests converting an IDM MATLAB traffic simulation to the Gipps model.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "254287",
+      "topic_id": "traffic_sim",
+      "summary": "Troubleshoots invalid vehicle indexing in a Gipps traffic simulation.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "254308",
+      "topic_id": "traffic_sim",
+      "summary": "Troubleshoots non-finite rectangle coordinates in a MATLAB car-following visualization.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "254638",
+      "topic_id": "traffic_sim",
+      "summary": "Investigates exploding positions in a Gipps traffic simulation and asks about initial conditions and position updates.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "254767",
+      "topic_id": "traffic_sim",
+      "summary": "Asks how to derive acceleration from the Gipps velocity equations.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "262888",
+      "topic_id": "traffic_theory",
+      "summary": "Requests a derivative-based expression for acceleration from Gipps model equations.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "262922",
+      "topic_id": "traffic_sim",
+      "summary": "Requests MATLAB code changes to implement the Gipps model and use a custom multiplication notation.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "264999",
+      "topic_id": "traffic_sim",
+      "summary": "Requests summaries of MATLAB code that simulates car-following traffic flow.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265010",
+      "topic_id": "traffic_sim",
+      "summary": "Requests summaries of MATLAB code that simulates car-following traffic flow.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265064",
+      "topic_id": "traffic_sim",
+      "summary": "Requests summaries of MATLAB code that simulates car-following traffic flow.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265141",
+      "topic_id": "traffic_sim",
+      "summary": "Requests a 3-by-3 grid of traffic simulation plots spaced half a second apart.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265414",
+      "topic_id": "traffic_sim",
+      "summary": "Debugs a final traffic plot intended to show nine frames at half-second intervals.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265604",
+      "topic_id": "traffic_sim",
+      "summary": "Requests a 3-by-3 grid of traffic snapshots ten seconds apart.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "265708",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "265723",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "265735",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266108",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266178",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266189",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266290",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266304",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266338",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266382",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266460",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266467",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266509",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "266526",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "268511",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "268529",
+      "topic_id": "traffic_sim",
+      "summary": "Repeatedly revises MATLAB traffic simulation plotting: nine time snapshots, updated vehicle positions, shared axis labels, and static subplots.",
+      "confidence": 0.9,
+      "note": "Many near-duplicate plotting requests occur; treated as separate retained chats, each assigned once."
+    },
+    {
+      "chat_id": "268641",
+      "topic_id": "traffic_theory",
+      "summary": "Asks how Gipps, Krauss, and IDM results differ and whether nonlinear IDM curves or slower Gipps behavior are reasonable.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "283193",
+      "topic_id": "traffic_theory",
+      "summary": "Asks for term-by-term explanations of Krauss and IDM traffic equations.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "283316",
+      "topic_id": "traffic_theory",
+      "summary": "Requests explanations of traffic-model equations in specified mathematical formats.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "283536",
+      "topic_id": "traffic_theory",
+      "summary": "Provides continuum traffic equations and asks for references for Gipps and IDM formulations.",
+      "confidence": 0.88,
+      "note": ""
+    },
+    {
+      "chat_id": "284809",
+      "topic_id": "num_stats",
+      "summary": "Asks what Bayesian hierarchical modeling is, when it is useful, and how to choose a distribution.",
+      "confidence": 0.88,
+      "note": ""
+    }
+  ],
+  "users": [
+    {
+      "user": "User 1",
+      "summary": "Retained chats cover genomic sequencing and bioinformatics, biological interpretation, Rust and Python tools, command-line tasks, and research or job communication. This describes the supplied activity only."
+    },
+    {
+      "user": "User 2",
+      "summary": "Retained chats focus on Taichi implementations of particle-based mechanics simulations and numerical solvers, with repeated code revision and debugging. This describes the supplied activity only."
+    },
+    {
+      "user": "User 3",
+      "summary": "Retained chats focus on MATLAB car-following simulations, especially Gipps, Krauss, and IDM models, plotting, debugging, and equation interpretation. This describes the supplied activity only."
+    }
+  ]
+}

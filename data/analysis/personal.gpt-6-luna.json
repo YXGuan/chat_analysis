@@ -1,0 +1,979 @@
+{
+  "title": "Topics across retained WildChat conversations",
+  "topics": [
+    {
+      "id": "bio",
+      "parent_id": null,
+      "name": "Bioinformatics and biological data",
+      "description": "Questions about sequencing, genomes, transcriptomics, and quantitative analysis of biological data."
+    },
+    {
+      "id": "bio_seq",
+      "parent_id": "bio",
+      "name": "Sequencing and genome workflows",
+      "description": "Sequencing data formats, read processing, alignment, variant calling, genome annotation, and sequence extraction."
+    },
+    {
+      "id": "bio_omics",
+      "parent_id": "bio",
+      "name": "Transcriptomics and omics analysis",
+      "description": "Exploratory analyses of expression data and methods for comparing biological samples."
+    },
+    {
+      "id": "bio_epi",
+      "parent_id": "bio",
+      "name": "Disease rates and population data",
+      "description": "Incidence, population denominators, YLDs, and calculations using disease counts and rates."
+    },
+    {
+      "id": "sw",
+      "parent_id": null,
+      "name": "Scientific software development",
+      "description": "Programming, performance, and distribution questions arising from scientific computing tools."
+    },
+    {
+      "id": "sw_rust",
+      "parent_id": "sw",
+      "name": "Rust programming and performance",
+      "description": "Rust code, data structures, parallel processing, and implementation or optimization questions."
+    },
+    {
+      "id": "sw_other",
+      "parent_id": "sw",
+      "name": "Other programming and pipelines",
+      "description": "Programming questions involving Python, C++, Nextflow, command-line arguments, and code comprehension."
+    },
+    {
+      "id": "sw_dist",
+      "parent_id": "sw",
+      "name": "Software packaging and release",
+      "description": "Container builds, Bioconda recipes, package metadata, release checks, and repository badges."
+    },
+    {
+      "id": "pt",
+      "parent_id": null,
+      "name": "Physical therapy study and clinical practice",
+      "description": "PTA coursework and patient-care questions about mobility, rehabilitation, anatomy, and documentation."
+    },
+    {
+      "id": "pt_mob",
+      "parent_id": "pt",
+      "name": "Gait, transfers, and assistive devices",
+      "description": "Mobility training, gait patterns, weight-bearing precautions, transfers, and assistive-device use."
+    },
+    {
+      "id": "pt_ex",
+      "parent_id": "pt",
+      "name": "Therapeutic exercise and rehabilitation",
+      "description": "Exercise instruction and progression, postoperative rehabilitation, and treatment planning."
+    },
+    {
+      "id": "pt_assess",
+      "parent_id": "pt",
+      "name": "PT assessment and clinical documentation",
+      "description": "SOAP notes, examination findings, clinical reasoning, and documenting patient performance."
+    },
+    {
+      "id": "pt_concepts",
+      "parent_id": "pt",
+      "name": "Anatomy, conditions, and clinical concepts",
+      "description": "Musculoskeletal and rehabilitation concepts, conditions, tests, and general clinical knowledge."
+    },
+    {
+      "id": "edu",
+      "parent_id": null,
+      "name": "Learning, work, and professional communication",
+      "description": "Questions about studying, career and employment matters, workplace or school messages, and reflections on educational experiences."
+    },
+    {
+      "id": "edu_quiz",
+      "parent_id": "edu",
+      "name": "Course study and practice questions",
+      "description": "Quizzes, board-exam practice, explanations of course material, and study strategies."
+    },
+    {
+      "id": "edu_write",
+      "parent_id": "edu",
+      "name": "Practical email and message writing",
+      "description": "Drafting or editing emails and replies about school, work, clinical placements, scheduling, and related practical arrangements."
+    },
+    {
+      "id": "edu_reflect",
+      "parent_id": "edu",
+      "name": "Course reflections and learning experiences",
+      "description": "Written reflections on class, collaboration, and the student learning experience."
+    },
+    {
+      "id": "edu_career",
+      "parent_id": "edu",
+      "name": "Career, employment, and application questions",
+      "description": "Questions about remote work arrangements, interview coordination, and motivation letters."
+    }
+  ],
+  "conversations": [
+    {
+      "chat_id": "1921362",
+      "topic_id": "sw_rust",
+      "summary": "Optimizes Rust string construction for writing GFF feature attributes.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "1926589",
+      "topic_id": "bio_epi",
+      "summary": "Asks how to calculate yearly disease incidence from case totals and whether rates across years can be averaged.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "1926709",
+      "topic_id": "bio_epi",
+      "summary": "Works through age-specific and three-year incidence rates, population denominators, and calculations from a disease table.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "1926950",
+      "topic_id": "bio_epi",
+      "summary": "Calculates the population implied by 416 cases and an incidence of 6.01 per 100,000.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "1927217",
+      "topic_id": "bio_epi",
+      "summary": "Asks about calculating YLDs and accessing row-index and column labels in a pandas age-by-year table.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2017402",
+      "topic_id": "sw_other",
+      "summary": "Adjusts a Nextflow workflow output so paired FASTQ paths are nested together for each sample.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2051222",
+      "topic_id": "sw_other",
+      "summary": "Seeks an explanation of C++ code that parses trajectory records, reads standard input, and tracks processing counts.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2073231",
+      "topic_id": "sw_rust",
+      "summary": "Reviews a Rust GTF parser that groups gene, transcript, and feature records into ordered output layers.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2073242",
+      "topic_id": "sw_rust",
+      "summary": "Continues debugging and reviewing Rust code that organizes parsed GTF records.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2073328",
+      "topic_id": "sw_rust",
+      "summary": "Requests a detailed review and implementation help for a Rust GTF processing and output program.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2087267",
+      "topic_id": "sw_other",
+      "summary": "Parses GenBank feature coordinates and qualifiers in Python and troubleshoots iterator use while extracting gene names.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2087370",
+      "topic_id": "bio_seq",
+      "summary": "Extracts gene sequences from FASTA coordinates and asks how to map a mutation coordinate to its codon position.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2144890",
+      "topic_id": "sw_rust",
+      "summary": "Develops a Rust pipeline to assemble transcript sequences from annotated genomic intervals.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2145043",
+      "topic_id": "sw_rust",
+      "summary": "Reviews parallel Rust aggregation and asks about writing transcript results from parallel iteration.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2146213",
+      "topic_id": "sw_rust",
+      "summary": "Reviews a Rust command-line program using Rayon and clarifies a helper function in its processing flow.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2147780",
+      "topic_id": "bio_omics",
+      "summary": "Plans exploratory analysis of Salmon gene-count data comparing platelet samples from TB-positive and control groups, including UMAP.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2206428",
+      "topic_id": "bio_seq",
+      "summary": "Asks about Nanopore FASTQ output and tools for trimming adapters, barcodes, and poor-quality or short reads.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2206575",
+      "topic_id": "edu_career",
+      "summary": "Clarifies a pasted suggestion about forming a company to contract remotely with a US employer.",
+      "confidence": 0.78,
+      "note": "These are career or employment questions; the chats give limited detail about the specific role or application."
+    },
+    {
+      "chat_id": "2207000",
+      "topic_id": "sw_other",
+      "summary": "Seeks to optimize Python code that iterates through BUSCO database files.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2206491",
+      "topic_id": "bio_seq",
+      "summary": "Asks about Nanopore read layout, bacterial isolate alignment and variant calling, a basic PromethION workflow, and Medaka polishing.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2238978",
+      "topic_id": "bio_omics",
+      "summary": "Interprets a paragraph about antigenic-distance measurements and requests a simulated dataset based on it.",
+      "confidence": 0.66,
+      "note": "The prompt is brief or spans more than one subject; assigned by its main stated request."
+    },
+    {
+      "chat_id": "2254127",
+      "topic_id": "edu_career",
+      "summary": "Drafts a response to an interview coordination request and an email to the copied contact.",
+      "confidence": 0.78,
+      "note": "These are career or employment questions; the chats give limited detail about the specific role or application."
+    },
+    {
+      "chat_id": "2254563",
+      "topic_id": "sw_dist",
+      "summary": "Asks how to publish a Rust tool as a Bioconda package and understand and test a multistage Docker build.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2255135",
+      "topic_id": "sw_dist",
+      "summary": "Builds a Bioconda recipe for a Rust tool and troubleshoots source hashes, metadata, and conda-build availability.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2257811",
+      "topic_id": "edu_career",
+      "summary": "Requests a short example motivation letter.",
+      "confidence": 0.78,
+      "note": "These are career or employment questions; the chats give limited detail about the specific role or application."
+    },
+    {
+      "chat_id": "2258089",
+      "topic_id": "sw_dist",
+      "summary": "Addresses Bioconda pull-request lint errors concerning spacing and run exports.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2258294",
+      "topic_id": "sw_dist",
+      "summary": "Asks what the run_exports field in a package recipe does.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2258533",
+      "topic_id": "bio_seq",
+      "summary": "Brainstorms bioinformatics project ideas that could use Rust.",
+      "confidence": 0.66,
+      "note": "The prompt is brief or spans more than one subject; assigned by its main stated request."
+    },
+    {
+      "chat_id": "2259748",
+      "topic_id": "sw_dist",
+      "summary": "Asks how to add a Conda download-count badge to a GitHub repository.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2354199",
+      "topic_id": "sw_rust",
+      "summary": "Compares byte keys and string keys in Rust HashMaps and seeks an efficient approach for large keys and lifetimes.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2354295",
+      "topic_id": "sw_rust",
+      "summary": "Implements parallel parsing of annotation tracks into a Rust transcript map.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2354306",
+      "topic_id": "sw_rust",
+      "summary": "Continues implementing a parallel Rust parser for annotation tracks and map aggregation.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "2363354",
+      "topic_id": "sw_other",
+      "summary": "Asks what a Python argparse flag for skipping processing steps means.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3229555",
+      "topic_id": "edu_quiz",
+      "summary": "Requests multiple-choice quizzes on encephalitis and meningitis, then asks for answers.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3229810",
+      "topic_id": "edu_quiz",
+      "summary": "Requests quizzes on spinal cord injury syndromes and general spinal cord injury, with answers.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3230621",
+      "topic_id": "pt_concepts",
+      "summary": "Asks when coma ends in the Rancho Los Amigos cognitive scale.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3250521",
+      "topic_id": "edu_write",
+      "summary": "Drafts a reply about childhood vaccine records, required immunizations, and blood titers.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3285016",
+      "topic_id": "edu_write",
+      "summary": "Checks wording for asking Lindsay about availability for a scheduled meeting.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3297309",
+      "topic_id": "pt_concepts",
+      "summary": "Answers a question about seating and communication accommodations for people with hearing, vision, and mobility disabilities.",
+      "confidence": 0.66,
+      "note": "The prompt is brief or spans more than one subject; assigned by its main stated request."
+    },
+    {
+      "chat_id": "3297311",
+      "topic_id": "edu_write",
+      "summary": "Edits responses on interprofessional collaboration, co-treatment, red flags, and related PTA course questions.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3316577",
+      "topic_id": "edu_write",
+      "summary": "Edits a request to continue a Thursday and Friday tutoring schedule.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3316583",
+      "topic_id": "edu_write",
+      "summary": "Rewrites the same tutoring-schedule request as a question.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3323018",
+      "topic_id": "edu_write",
+      "summary": "Drafts an email sharing Tdap, TB, MMR, and varicella records or test results.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3323034",
+      "topic_id": "edu_write",
+      "summary": "Writes a message to Lindsay attaching vaccine and blood-titer information.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3324508",
+      "topic_id": "pt_assess",
+      "summary": "Checks clinical wording for weakness in the gastrocnemius, soleus, and ankle flexors.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3324544",
+      "topic_id": "pt_assess",
+      "summary": "Checks wording describing bilateral knee varus, external rotation, and toe-out during heel strike.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3342008",
+      "topic_id": "edu_quiz",
+      "summary": "Asks where to find answers to textbook chapter questions in orthopedic management.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3342075",
+      "topic_id": "edu_quiz",
+      "summary": "Works through multiple-choice questions on DVT signs and physical therapy documentation.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3342144",
+      "topic_id": "edu_quiz",
+      "summary": "Works through a clinical multiple-choice question and rephrases definitions of muscle strength and strength training.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3366216",
+      "topic_id": "pt_mob",
+      "summary": "Edits a patient-facing script for assessing posture and gait, including instructions and communication.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3373333",
+      "topic_id": "pt_concepts",
+      "summary": "Asks which muscles may be weak when a patient walks with toe-out.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3374690",
+      "topic_id": "pt_concepts",
+      "summary": "Checks the wording and values in a statement about stage 1 hypertension.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3380713",
+      "topic_id": "pt_mob",
+      "summary": "Edits instructions for applying a blood-pressure cuff and measuring a patient's blood pressure.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3392677",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for an explanation of muscle-tendon extensibility and its role in movement.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3398359",
+      "topic_id": "pt_concepts",
+      "summary": "Requests an explanation of grades I to IV in non-thrust oscillation techniques.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3405378",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for an explanation of fibromyalgia management and pacing activity.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3405652",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for explanations of capsular shift and capsulolabral reconstruction.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3412349",
+      "topic_id": "pt_mob",
+      "summary": "Describes a walking activity with directional cues and asks for wording help.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3416508",
+      "topic_id": "pt_ex",
+      "summary": "Edits instructions for an obstacle-course activity on uneven surfaces while counting.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3416573",
+      "topic_id": "pt_concepts",
+      "summary": "Requests clarification of exercise pacing for people with fibromyalgia.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3439028",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for an explanation of aerobic conditioning and muscle energy use.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3440347",
+      "topic_id": "pt_concepts",
+      "summary": "Asks what an increase in SA-node depolarization frequency and heart rate means.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3445287",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for an explanation of motor learning and skill acquisition.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3445801",
+      "topic_id": "edu_quiz",
+      "summary": "Requests quiz questions about continuous aerobic exercise, intensity, duration, and muscle fibers.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3458564",
+      "topic_id": "edu_quiz",
+      "summary": "Requests practice questions from course material on physical therapy examination components.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3468657",
+      "topic_id": "edu_write",
+      "summary": "Drafts a short reply to a birthday greeting and information about a part-time SLC teaching role.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3468713",
+      "topic_id": "edu_write",
+      "summary": "Drafts a brief reply to a colleague's weekend camping and birthday message.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3482372",
+      "topic_id": "pt_concepts",
+      "summary": "Asks which muscle is tested by hip-extension manual muscle testing intended to isolate gluteus maximus.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3495185",
+      "topic_id": "pt_mob",
+      "summary": "Checks explanations of wheelchair armrests and calf rests, including transfer safety.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3496545",
+      "topic_id": "pt_ex",
+      "summary": "Asks about active-assisted knee-flexion range-of-motion exercise.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3502367",
+      "topic_id": "pt_ex",
+      "summary": "Edits explanations of knee patellar or joint mobilization as an intervention for pain, patellar mobility, and knee-flexion range of motion.",
+      "confidence": 0.8,
+      "note": "The chat opens with a link-edit request but its substantive follow-up turns concern knee mobilization and rehabilitation."
+    },
+    {
+      "chat_id": "3502422",
+      "topic_id": "pt_assess",
+      "summary": "Edits an interpretation linking limited knee flexion PROM with possible quadriceps tightness and hamstring weakness.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3509585",
+      "topic_id": "edu_reflect",
+      "summary": "Edits a reflection that a class discussion repeated familiar material and felt less useful.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3514229",
+      "topic_id": "pt_assess",
+      "summary": "Edits a clinical description of right proximal hamstring strain and hip range-of-motion and strength findings.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3520569",
+      "topic_id": "pt_concepts",
+      "summary": "Asks about tibial motion associated with hamstring and quadriceps activation.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3524267",
+      "topic_id": "pt_concepts",
+      "summary": "Asks for an explanation of meniscectomy indications and related meniscal tear features.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3533893",
+      "topic_id": "pt_assess",
+      "summary": "Revises a patient finding describing limited and reduced right hip PROM.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3534709",
+      "topic_id": "edu_quiz",
+      "summary": "Requests quiz questions about knee-joint effusion measurement and the modified stroke test.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3540889",
+      "topic_id": "edu_reflect",
+      "summary": "Edits a short comment about confusion over class assignments.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3541256",
+      "topic_id": "edu_quiz",
+      "summary": "Requests multiple-choice quiz questions about ligament injury grades.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3548351",
+      "topic_id": "edu_quiz",
+      "summary": "Requests quiz questions from material on bed mobility and transfer activities.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3548494",
+      "topic_id": "edu_quiz",
+      "summary": "Requests quizzes on hip and knee disorders, postoperative protection, and therapeutic exercise material.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3555187",
+      "topic_id": "pt_mob",
+      "summary": "Checks explanations of transfer choices for upper- and lower-extremity weight-bearing limits and wheelchair setup.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3567235",
+      "topic_id": "pt_concepts",
+      "summary": "Asks how medical asepsis differs across infection-control situations, including neutropenic precautions.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3568875",
+      "topic_id": "pt_ex",
+      "summary": "Edits explanations and a plan of care for proximal hamstring strain, including massage, myofascial work, and exercises.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3572828",
+      "topic_id": "pt_ex",
+      "summary": "Asks whether shoulder PNF D1/D2 is suitable as range-of-motion exercise in a maximum-protection phase and edits a related reply.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3573379",
+      "topic_id": "pt_concepts",
+      "summary": "Requests explanations of ADA state immunity and separately provides a mobility task involving sit-to-stand while maintaining an arm restriction.",
+      "confidence": 0.66,
+      "note": "The prompt is brief or spans more than one subject; assigned by its main stated request."
+    },
+    {
+      "chat_id": "3574662",
+      "topic_id": "edu_reflect",
+      "summary": "Organizes feedback about gaps between lecture language and quiz questions and difficulty with course material.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3580800",
+      "topic_id": "edu_quiz",
+      "summary": "Requests PTA board-exam practice questions.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3587627",
+      "topic_id": "edu_reflect",
+      "summary": "Edits a personal reflection about struggling after clinical visits, confusion, and trying to move forward.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3605687",
+      "topic_id": "edu_write",
+      "summary": "Rewrites answers about PTA-program experience, interests in physical therapy, and visual learning preferences.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3618242",
+      "topic_id": "edu_write",
+      "summary": "Edits a friendly resignation message to an employer due to increasing schoolwork and asks about notice timing.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3643285",
+      "topic_id": "pt_assess",
+      "summary": "Analyzes a low-back-pain case with lumbar degeneration and radiating symptoms to decide whether it is flexion- or extension-biased.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3643468",
+      "topic_id": "pt_ex",
+      "summary": "Asks how to progress a Swiss-ball pike exercise.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3643725",
+      "topic_id": "pt_ex",
+      "summary": "Works through a low-back-pain case and asks about sequencing manual therapy, modalities, and exercise.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3645241",
+      "topic_id": "pt_ex",
+      "summary": "Edits a low-back-pain treatment plan involving manual therapy, traction, posture correction, and stabilization exercises.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3662858",
+      "topic_id": "pt_ex",
+      "summary": "Requests an easier home exercise alternative to passive log rolling of the leg.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3663518",
+      "topic_id": "pt_ex",
+      "summary": "Edits a post-TKA patient session and home program involving knee range of motion and sit-to-stand practice.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3677332",
+      "topic_id": "pt_concepts",
+      "summary": "Asks which shoulder ligament or joint provides the strongest support among glenohumeral, AC, and SC.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3678950",
+      "topic_id": "edu_quiz",
+      "summary": "Compares gait-pattern difficulty and requests multiple-choice questions about gait training and assistive-device procedures.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3686614",
+      "topic_id": "edu_write",
+      "summary": "Drafts a reply to a clinical instructor's welcome and outpatient work-rehabilitation placement details.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3686780",
+      "topic_id": "pt_mob",
+      "summary": "Edits answers about advancing crutch gait patterns, therapist guarding, underhand grip, and gait with pain.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3691206",
+      "topic_id": "edu_write",
+      "summary": "Drafts a friendly and then more professional reply to a clinical instructor about a first outpatient rotation.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3691313",
+      "topic_id": "edu_write",
+      "summary": "Edits an email explaining clinic hours and possible Friday make-up hours.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3697472",
+      "topic_id": "pt_mob",
+      "summary": "Orders canes, crutches, walkers, and parallel bars by restrictiveness.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3697487",
+      "topic_id": "pt_mob",
+      "summary": "Orders assistive devices by restrictiveness and asks about hemi-walker width.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3710297",
+      "topic_id": "pt_ex",
+      "summary": "Requests instructions for resisted hip motions, side lunges, BOSU lunges, and calf raises.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3719223",
+      "topic_id": "pt_assess",
+      "summary": "Checks a short clinical phrase about the wrist position at a table.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3725505",
+      "topic_id": "pt_assess",
+      "summary": "Clarifies open- versus closed-chain actions during a step-down task.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3726141",
+      "topic_id": "pt_assess",
+      "summary": "Analyzes joint motions, muscle actions, and range of motion for step-up and step-down tasks.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3741054",
+      "topic_id": "edu_write",
+      "summary": "Drafts a reply confirming continued interest in a skilled-nursing clinical placement.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3742600",
+      "topic_id": "edu_write",
+      "summary": "Edits a simple email confirming interest in skilled nursing and openness to clinical settings.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3743137",
+      "topic_id": "pt_assess",
+      "summary": "Develops and edits an assessment and SOAP note for a non-weight-bearing patient practicing crutch gait after tibial ORIF.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3743208",
+      "topic_id": "edu_write",
+      "summary": "Checks a short email telling an instructor that a practice SOAP note was submitted for review.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3800070",
+      "topic_id": "pt_mob",
+      "summary": "Reviews front-wheeled-walker fitting and gait, patient education about weight-bearing, and transfer or pre-gait choices.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3801971",
+      "topic_id": "edu_write",
+      "summary": "Checks an email thanking an instructor and reporting completion of an escape-room quiz.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3805666",
+      "topic_id": "pt_mob",
+      "summary": "Clarifies and edits explanations of full, partial, percentage, and non-weight-bearing.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3861199",
+      "topic_id": "edu_quiz",
+      "summary": "Seeks study help for spinal osteokinematics, packed positions, and capsular patterns.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3885451",
+      "topic_id": "edu_reflect",
+      "summary": "Edits a reflection on interprofessional gait-training collaboration, group contributions, and presentation comfort.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3990420",
+      "topic_id": "pt_ex",
+      "summary": "Asks about ankle motion limits after Achilles repair and edits a message sharing acute and outpatient TKA/THA treatment material.",
+      "confidence": 0.66,
+      "note": "The prompt is brief or spans more than one subject; assigned by its main stated request."
+    },
+    {
+      "chat_id": "3992148",
+      "topic_id": "pt_ex",
+      "summary": "Asks how to perform figure-four stretches for hip rotation and about six-week bunionectomy exercises.",
+      "confidence": 0.86,
+      "note": ""
+    },
+    {
+      "chat_id": "3992485",
+      "topic_id": "pt_ex",
+      "summary": "Requests a postoperative bunionectomy case with ROM and MMT and checks wording for a movement cue.",
+      "confidence": 0.86,
+      "note": ""
+    }
+  ],
+  "users": [
+    {
+      "user": "User 1",
+      "summary": "Recorded chats focus on bioinformatics and scientific programming: Rust and parallel processing, genome annotation and sequence workflows, sequencing and transcriptomics, software packaging, and a smaller set of disease-rate and population-data calculations. This describes only the supplied chat sample."
+    },
+    {
+      "user": "User 2",
+      "summary": "Recorded chats focus on PTA education and clinical preparation, including gait and transfer skills, therapeutic exercise, rehabilitation concepts, assessments, and study quizzes. Many chats also seek help editing emails, clinical writing, and course reflections; this describes only the supplied chat sample."
+    }
+  ]
+}

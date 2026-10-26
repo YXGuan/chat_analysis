@@ -1,0 +1,63 @@
+name: Upload Python Package to PyPI when a Release is Created
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  pypi-publish:
+    name: Publish release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/kura
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Build Web Assets
+        working-directory: ui
+        run: |
+          bun install
+          bun run build
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Build Package
+        run: uv build
+
+      - name: Verify static folder in build
+        run: |
+          # Check if static folder exists in the built wheel
+          wheel_file=$(ls dist/*.whl | head -n 1)
+          if [ -z "$wheel_file" ]; then
+            echo "No wheel file found in dist/"
+            exit 1
+          fi
+          
+          # Extract and check for static folder
+          python -m zipfile -l "$wheel_file" | grep -q "kura/static/" || {
+            echo "Error: static folder not found in wheel package"
+            echo "Wheel contents:"
+            python -m zipfile -l "$wheel_file"
+            exit 1
+          }
+          
+          echo "✓ Static folder verified in wheel package"
+
+      - name: Build and publish Python package
+        run: uv publish
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}

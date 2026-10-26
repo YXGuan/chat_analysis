@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.so
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node.js
+node_modules/
+
+# macOS
+.DS_Store
+
+# Environments
+.env
+.env.*
+!.env.example
+.cache/
+.playwright-mcp/
+.ruff_cache/
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+examples/**/*.jsonl
+examples/**/*.json
+!examples/temporal/sample/conversations.jsonl
+!examples/temporal/sample/labels.json
+!examples/temporal/sample/selection.json
+!examples/temporal/reference-research/gpt-6-luna/conversations.jsonl
+examples/**/*.db
+
+# Tutorial checkpoints
+site/
+tutorial_checkpoints*/
+tutorial_*_checkpoints*/
+wildchat_results_small/
+*.db-wal
+*.db-shm
+
+# Private imported histories and model outputs
+.local/
+.codex/
+.aws/
+.ssh/
+.envrc
+
+# Credentials, browser captures, and local databases/exports
+*.pem
+*.key
+*.p12
+*.pfx
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.har
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Generated reports can embed complete private conversations.
+examples/**/*.html
+!examples/**/report_template.html
+!examples/temporal/sample/report.html
+!examples/temporal/reference-research/gpt-6-luna/report.html

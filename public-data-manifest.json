@@ -1,0 +1,14 @@
+{
+  "data/analysis/personal.gpt-6-luna.json": "dbf88204f307012f6fe763ef2581dc7ecf97ee0190d44fda1d90e947978a35c4",
+  "data/analysis/research.gpt-6-luna.json": "735647232a8eda7ca6c077d1005f745f7e784c5cc449cad9f24e16b8e69105a5",
+  "examples/temporal/reference-research/gpt-6-luna/conversations.jsonl": "7313247bc79c070b7ed7d8e0c01c9f399fb50aa4b5dbd89b0f73ef12b68a26c2",
+  "examples/temporal/reference-research/gpt-6-luna/report.html": "9999929c60dd215b50f3f3e5d6bc0ae0142756ece2735e4f9984282df55f401f",
+  "examples/temporal/sample/conversations.jsonl": "b07f0e87e3c035268c93554d720e511b51b464514c9480d9cd47495f0c4b82b6",
+  "examples/temporal/sample/labels.json": "1bd417a55babdf9f96e78f4f047a80c272a821073a3de32517b90f5ac7538b7c",
+  "examples/temporal/sample/report.html": "55f40f2a65c23c27da1c923169d8afd9585c7a226f311b28165b687ee8e4da55",
+  "examples/temporal/sample/selection.json": "6a97525a1b1a32410136b8a7a07a591ccc45a410cd68dc96713af781582ce64b",
+  "kura/static/dist/data/personal.json": "010f9800cb8745589ad48f79acf98f1ad65987ef358941ca32c09fa1f2278935",
+  "kura/static/dist/data/research.json": "5b34ae99bae7da59797ad55574cd69195c7cb0f9b19511c3b334bc19c8aab024",
+  "ui/public/data/personal.json": "010f9800cb8745589ad48f79acf98f1ad65987ef358941ca32c09fa1f2278935",
+  "ui/public/data/research.json": "5b34ae99bae7da59797ad55574cd69195c7cb0f9b19511c3b334bc19c8aab024"
+}

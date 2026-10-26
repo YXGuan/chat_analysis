@@ -1,0 +1,17 @@
+{
+  "dataset": "allenai/WildChat-4.8M",
+  "dataset_url": "https://huggingface.co/datasets/allenai/WildChat-4.8M",
+  "dataset_revision": "main (downloaded 2026-10-24)",
+  "users": 2,
+  "language": "English",
+  "seed": 42,
+  "min_active_weeks": 10,
+  "min_span_days": 84,
+  "min_chats": 30,
+  "max_chats": 100,
+  "min_language_share": 0.95,
+  "min_distinct_openings": 0.7,
+  "max_messages": 8,
+  "max_message_chars": 2000,
+  "selection_note": "First two usable groups in a seeded shuffle after filtering on activity, language, and varied openings; no topic-based selection."
+}

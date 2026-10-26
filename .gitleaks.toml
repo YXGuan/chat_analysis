@@ -1,0 +1,10 @@
+title = "Repository secret detection"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "logfire-token"
+description = "Logfire credential"
+regex = '''pylf_v[0-9]+_[A-Za-z0-9]+_[A-Za-z0-9_-]{20,}'''
+keywords = ["pylf_"]
