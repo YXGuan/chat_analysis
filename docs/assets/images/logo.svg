@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="Chat Analysis">
+  <rect x="10" y="30" width="12" height="32" rx="6" fill="#2F6FDB"/>
+  <rect x="30" y="10" width="12" height="52" rx="6" fill="#2F6FDB"/>
+  <rect x="50" y="22" width="12" height="40" rx="6" fill="#2F6FDB" opacity="0.55"/>
+</svg>
