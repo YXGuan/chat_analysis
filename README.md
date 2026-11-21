@@ -13,6 +13,7 @@
 [![React](https://img.shields.io/badge/react-19-149ECA?style=flat-square&logo=react&logoColor=white)](ui/package.json)
 [![HeroUI](https://img.shields.io/badge/HeroUI-v3-111111?style=flat-square)](https://heroui.com)
 
+[What I built](#what-i-built) ·
 [Quick start](#quick-start) ·
 [Import your history](#import-your-chatgpt-history) ·
 [How it works](#how-it-works) ·
@@ -35,6 +36,27 @@ You can import your own ChatGPT history or start with the included
 [WildChat](https://huggingface.co/datasets/allenai/WildChat-4.8M) samples.
 Chat Analysis builds on [Kura](https://github.com/jxnl/kura), an open-source
 take on [Anthropic's Clio](https://www.anthropic.com/research/clio).
+
+## What I built
+
+Chat Analysis extends Kura. Most of `kura/`, including the embedding,
+clustering, summary, and checkpoint code, is Kura's and unchanged. These are the
+parts I added:
+
+| Area | Files | What it does |
+| --- | --- | --- |
+| Change over time | [`kura/temporal.py`](kura/temporal.py) | Places each person's chats on calendar weeks with fixed categories, then compares their first and last four weeks. A window with too few chats counts as missing evidence, not as lost interest. |
+| ChatGPT import | [`kura/history.py`](kura/history.py), [`kura/imports.py`](kura/imports.py) | Reads ChatGPT exports, follows the selected branch of each conversation, and keeps imports and job status in private local storage. |
+| Model analysis | [`kura/analysis.py`](kura/analysis.py), [`kura/codex.py`](kura/codex.py) | Builds one fixed hierarchy of themes and topics with a headless Codex run, then checks that every chat is assigned exactly once and that counts match at both levels. |
+| Real-user samples | [`examples/local/`](examples/local/), [`examples/temporal/`](examples/temporal/) | Selects WildChat users by linking hashed IP and browser details, runs the Kura pipeline on all of their chats, and writes single-file HTML reports. |
+| Interface | [`ui/src/TemporalApp.tsx`](ui/src/TemporalApp.tsx), [`ui/src/temporal/`](ui/src/temporal/) | The React app: activity timeline, topic chart, cluster explorer, and import dialog. |
+| Changes to Kura | [`kura/cli/cli.py`](kura/cli/cli.py), [`kura/cli/server.py`](kura/cli/server.py) | Adds the `import-history` command and the local import service. |
+| Tests and checks | [`tests/test_temporal.py`](tests/test_temporal.py), [`tests/test_history_import.py`](tests/test_history_import.py), [`tests/test_codex_analysis.py`](tests/test_codex_analysis.py), [`ui/tests/timeline.test.ts`](ui/tests/timeline.test.ts), [`scripts/check_publication.py`](scripts/check_publication.py) | Tests for the temporal profile, importer, and model-output checks, plus the privacy check that runs before publishing. |
+
+**Related:** [sidenote](https://github.com/YXGuan/sidenote) is my local-first
+research library built on the Hypothesis web annotator. It treats reading
+annotations as another kind of personal history and can build a Kura topic atlas
+from them.
 
 ## Features
 
